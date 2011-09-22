@@ -1,0 +1,43 @@
+sysname  = "Linux"
+nodename = "unix2.ic.ucsc.edu"
+release  = "2.6.18-194.11.3.el5"
+version  = "#1 SMP Mon Aug 30 16:19:16 EDT 2010"
+machine  = "x86_64"
+
+           (nil): NULL - null pointer
+
+Addresses of some local variables:
+  0x7fff7ea68994: &level - address of a stack variable at level 5
+  0x7fff7ea689b4: &level - address of a stack variable at level 4
+  0x7fff7ea689d4: &level - address of a stack variable at level 3
+  0x7fff7ea689f4: &level - address of a stack variable at level 2
+  0x7fff7ea68a14: &level - address of a stack variable at level 1
+  0x7fff7ea68b94: &main_local - address of a local variable in main
+  0x7fff7ea68b74: &argc - address of argc
+  0x7fff7ea68b68: &argv - address of argv
+  0x7fff7ea68c98: argv - address of arg vector
+  0x7fff7ea68ca8: environ - address of environ vector
+  0x7fff7ea6afea: stack_bottom (environ) - byte at bottom of stack
+
+Addresses of some static variables:
+        0x40060c: printf - (text) address of the printf() function
+        0x4006d0: &_start - start of program text
+        0x400bb0: main - (text) address of the main() function
+        0x4012b1: &_etext - end of program text
+        0x601a90: &init_var - address of an init static variable
+        0x601ab0: &_edata - end of init data segment
+        0x601ae0: &uninit_var1 - address of an uninit static variable1
+        0x602ae0: &uninit_var2 - address of an uninit static variable2
+        0x603ae0: &_end - end of uninit data segment
+
+Addresses of some heap variables:
+      0x1d138010: heap_variable - heap variable  0
+      0x1d138fc0: heap_variable - heap variable  1
+      0x1d139f70: heap_variable - heap variable  2
+      0x1d13af20: heap_variable - heap variable  3
+      0x1d13bed0: heap_variable - heap variable  4
+      0x1d13ce80: heap_variable - heap variable  5
+      0x1d13de30: heap_variable - heap variable  6
+      0x1d13ede0: heap_variable - heap variable  7
+      0x1d13fd90: heap_variable - heap variable  8
+      0x1d140d40: heap_variable - heap variable  9
