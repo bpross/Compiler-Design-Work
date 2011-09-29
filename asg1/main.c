@@ -107,6 +107,7 @@ void eprint_status (char *command, int status) {
 int main (int argc, char **argv) {
    progname = basename (argv[0]);
    int argi;
+   stringtable_ref st = new_stringtable();
    for (argi = 1; argi < argc; ++argi) {
       char *filename = argv[argi];
       char command[strlen (CPP) + 1 + strlen (filename) + 1];
