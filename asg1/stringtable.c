@@ -39,6 +39,15 @@ stringtable_ref new_stringtable(void){
   return(st);
 }
 
+cstring peek_stringtable(stringnode_ref input_node){
+  cstring ret_value;
+  assert(input_node != NULL);
+  assert(input_node->data != NULL);
+//  ret_value = calloc(1, sizeof(cstring) );
+  ret_value = input_node->data;
+  return ret_value;
+}
+
 
 stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   hashcode_t h;
@@ -47,6 +56,7 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   stringnode_ref temp_sn;
   double hash_percent_full = 0;
   assert(data != NULL);
+  cstring already_hashed;
 
   printf("data = %s\n", data);
   
@@ -75,6 +85,7 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   }
 
   temp_sn = st->buckets[bucket_number];
+  
   if (temp_sn == NULL){
     sn->key = h;
     printf("Key worked\n");
@@ -88,6 +99,8 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
     st->buckets[bucket_number] = sn;
     st->entries++;
   }else{
+//    already_hashed = peek_stringtable(temp_sn);
+//    printf("Already_hashed = %s\n", already_hashed);
     sn->key = h;
     printf("Key Worked\n");
     sn->data = data;
