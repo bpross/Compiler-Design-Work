@@ -45,7 +45,7 @@ ${EXECBIN} : ${OBJECTS}
 ci : ${ALLSOURCES}
 	- checksource ${ALLSOURCES}
 	git commit ${ALLSOURCES}
-
+    
 clean :
 	- rm ${OBJECTS} ${DEPSFILE} core ${EXECBIN}.errs
 
