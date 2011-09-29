@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 2011-08-31 19:29:11-07 - - $
+# $Id: Makefile,v 1.8 2011-09-22 18:48:16-07 - - $
 
 #
 # The parser in this directory is a dummy useable for asg2.
@@ -7,46 +7,50 @@
 # as a test harness for the scanner assignment.
 #
 
-CCOPT   = -D__EXTENSIONS__ -g -xO0 -Xc
-LINTOPT = -D__EXTENSIONS__ -Xa -fd -m -u -x -errchk=%all,no%longptr64
-LISTING = Code.Listing.ps
+GCC       = gcc -g -O0 -Wall -Wextra -std=gnu99
+LINT      = lint -Xa -fd -m -u -x -errchk=%all
+LISTING   = Listing.ps
 
-all: parser.c cppstrtok.c parser.h printtokens keywords
+all : printtokens addresses macros test-strhash
 	cid + Makefile
 
-parser.c parser.h: parser.y
+parser.c parser.h : parser.y
 	cid + parser.y
-	M4=gm4 bison -dtv parser.y -o parser.c
+	bison -dtv parser.y -o parser.c
 
-printtokens: printtokens.c parser.c parser.h
+printtokens : printtokens.c parser.c parser.h
 	cid + printtokens.c
-	lint ${LINTOPT} printtokens.c
-	cc ${CCOPT} printtokens.c parser.c -o printtokens
+	${LINT} printtokens.c
+	${GCC} printtokens.c parser.c -o printtokens
 
-keywords: keywords.c
-	lint ${LINTOPT} keywords.c
-	cc ${CCOPT} keywords.c -o keywords
+test-strhash : test-strhash.c strhash.h strhash.c
+	cid + test-strhash.c strhash.h strhash.c
+	${LINT} test-strhash.c strhash.c
+	${GCC} test-strhash.c strhash.c -o test-strhash
 
-keywords.c: parser.h make-kw-table.perl
-	cid + make-kw-table.perl
-	make-kw-table.perl parser.h keywords.c
+% : %.c
+	cid + $<
+	${LINT} $<
+	${GCC} $< -o $@
 
-lis: printtokens.output keywords.output Makefile
-	mkpspdf ${LISTING} parser.h parser.y \
-	   keywords.c keywords.output \
+lis : all printtokens.output addresses.output macros.output \
+	   test-strhash.output Makefile
+	mkpspdf ${LISTING} parser.y parser.h \
 	   printtokens.c printtokens.output \
-	   make-kw-table.perl Makefile
+	   addresses.c addresses.output \
+	   macros.c macros.output \
+	   test-strhash.c strhash.h strhash.c test-strhash.output \
+	   Makefile
 
 clean :
 	- rm parser.o parser.h parser.c \
-	     keywords keywords.c keywords.output \
 	     printtokens printtokens.o printtokens.output \
-	     keywords.output parser.output printtokens.output
+	     parser.output printtokens.output
 
 ci :
 	cid + strhash.h strhash.c make-kw-table.perl \
 	    parser.y printtokens.c Makefile \
 
-%.output: %
-	$< >$@
+%.output : %
+	./$< >$@
 
