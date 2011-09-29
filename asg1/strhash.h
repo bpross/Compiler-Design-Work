@@ -29,6 +29,21 @@
 
 typedef uint32_t hashcode_t;
 
+typedef struct hash_t * hash_t;
+
+#define HASH_FAIL -1
+
+int hash_init(hash_t *, int);
+
+int hash_lookup(const hash_t *, const char *);
+
+int hash_insert(hash_t *, const char *, int);
+
+int hash_delete(hash_t *, const char *);
+
+int hash_destroy(hash_t *);
+
+
 hashcode_t strhash (char *string);
 
 
