@@ -41,8 +41,10 @@ void cpplines (FILE *pipe, char *filename) {
    int linenr = 1;
    int tokenct;
    char inputname[LINESIZE];
+   stringtable_ref st = new_stringtable();
+   stringnode_ref sn;
    strcpy (inputname, filename);
-   hashcode_t hashcode = 0;
+//   hashcode_t hashcode = 0;
    for (;;) {
       char buffer[LINESIZE];
       char *fgets_rc = fgets (buffer, LINESIZE, pipe);
@@ -66,8 +68,10 @@ void cpplines (FILE *pipe, char *filename) {
          if (token == NULL) break;
          printf ("token %d.%d: [%s]\n",
                  linenr, tokenct, token);
-         hashcode = strhash(token);
-         printf("Hashcode = %u\n", hashcode);
+         //hashcode = strhash(token);
+         //printf("Hashcode = %u\n", hashcode);
+         sn = intern_stringtable(st, token);
+         
       }
    }
 }
@@ -107,7 +111,6 @@ void eprint_status (char *command, int status) {
 int main (int argc, char **argv) {
    progname = basename (argv[0]);
    int argi;
-   stringtable_ref st = new_stringtable();
    for (argi = 1; argi < argc; ++argi) {
       char *filename = argv[argi];
       char command[strlen (CPP) + 1 + strlen (filename) + 1];
