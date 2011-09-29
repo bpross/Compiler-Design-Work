@@ -1,4 +1,4 @@
-// $Id: stringtable.c,v 1.1 2011-09-29 12:18:58-07 - - $
+// $Id: stringtable.c,v 1.1 2011-09-29 12:30:26-07 - - $
 
 // Use cpp to scan a file and print line numbers.
 // Print out each input line read in, then strtok it for
@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wait.h>
+#include "stringtable.h"
+#include "strhash.h"
 
 int exit_status = EXIT_SUCCESS;
 char *progname;
@@ -37,8 +39,10 @@ void chomp (char *string, char delim) {
 // Run cpp against the lines of the file.
 void cpplines (FILE *pipe, char *filename) {
    int linenr = 1;
+   int tokenct;
    char inputname[LINESIZE];
    strcpy (inputname, filename);
+   hashcode_t hashcode = 0;
    for (;;) {
       char buffer[LINESIZE];
       char *fgets_rc = fgets (buffer, LINESIZE, pipe);
@@ -56,12 +60,14 @@ void cpplines (FILE *pipe, char *filename) {
       }
       char *savepos = NULL;
       char *bufptr = buffer;
-      for (int tokenct = 1;; ++tokenct) {
+      for (tokenct = 1;; ++tokenct) {
          char *token = strtok_r (bufptr, " \t\n", &savepos);
          bufptr = NULL;
          if (token == NULL) break;
          printf ("token %d.%d: [%s]\n",
                  linenr, tokenct, token);
+         hashcode = strhash(token);
+         printf("Hashcode = %u\n", hashcode);
       }
    }
 }
@@ -100,7 +106,8 @@ void eprint_status (char *command, int status) {
 
 int main (int argc, char **argv) {
    progname = basename (argv[0]);
-   for (int argi = 1; argi < argc; ++argi) {
+   int argi;
+   for (argi = 1; argi < argc; ++argi) {
       char *filename = argv[argi];
       char command[strlen (CPP) + 1 + strlen (filename) + 1];
       strcpy (command, CPP);
@@ -119,8 +126,3 @@ int main (int argc, char **argv) {
    return EXIT_SUCCESS;
 }
 
-//TEST// cid + foo*.*
-//TEST// runprog -x cppstrtok.lis cppstrtok foo.oc
-//TEST// catnv foo*.* >cppstrtok.input
-//TEST// mkpspdf cppstrtok.ps cppstrtok.c cppstrtok.c.log \
-//TEST//        cppstrtok.input cppstrtok.lis

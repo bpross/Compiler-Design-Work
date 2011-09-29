@@ -1,7 +1,5 @@
-
 #include <assert.h>
 #include <stdio.h>
-
 #include "strhash.h"
 
 hashcode_t strhash (char *string) {
@@ -15,6 +13,4 @@ hashcode_t strhash (char *string) {
    return hashcode;
 }
 
-// LINTED(static unused)
-RCSH(STRHASH_C,"$Id: strhash.c,v 1.2 2011-09-22 18:37:08-07 - - $")
 

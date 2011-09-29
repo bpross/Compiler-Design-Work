@@ -39,7 +39,6 @@ ${EXECBIN} : ${OBJECTS}
 	${COMPILE} -o $@ ${OBJECTS}
 
 %.o : %.c
-	cid + $<
 	${COMPILE} -c $<
 
 ci : ${ALLSOURCES}

@@ -25,14 +25,12 @@
 
 #include <inttypes.h>
 
-#include "auxlib.h"
+//#include <auxlib.h>
 
 typedef uint32_t hashcode_t;
 
 hashcode_t strhash (char *string);
 
-// LINTED(static unused)
-RCSC(STRHASH_H,"$Id: strhash.h,v 1.1 2011-08-31 19:29:11-07 - - $")
 
 #endif
 
