@@ -1,56 +1,74 @@
-# $Id: Makefile,v 1.8 2011-09-22 18:48:16-07 - - $
+# $Id: Makefile,v 1.4 2010-12-13 20:12:44-08 - - $
 
-#
-# The parser in this directory is a dummy useable for asg2.
-# It allows any sequence of tokens to be used in any order
-# without actually doing a syntax check.  It is only useful
-# as a test harness for the scanner assignment.
-#
+MKFILE      = Makefile
+DEPSFILE    = ${MKFILE}.deps
+NOINCL      = ci clean spotless
+NEEDINCL    = ${filter ${NOINCL}, ${MAKECMDGOALS}}
+GMAKE       = ${MAKE} --no-print-directory
+UNAME      ?= ${shell uname -s}
 
-GCC       = gcc -g -O0 -Wall -Wextra -std=gnu99
-LINT      = lint -Xa -fd -m -u -x -errchk=%all
-LISTING   = Listing.ps
+ifeq (${UNAME},SunOS)
+COMPILE  = CC -g -features=extensions
+MAKEDEPS = CC -xM1
+endif
+ifeq (${UNAME},Linux)
+COMPILE  = gcc -g -O0 -Wall -Wextra -Werror
+MAKEDEPS = gcc -MM
+endif
 
-all : printtokens addresses macros test-strhash
-	cid + Makefile
+SOURCE      = stringtable.c strhash.c main.c
+HEADER      = stringtable.h strhash.h
+EXECBIN     = oc
+OBJECTS     = ${SOURCE:.c=.o}
+OTHERS      = ${MKFILE} README
+ALLSOURCES  = ${HEADER} ${SOURCE} ${OTHERS}
+CLASS       = cmps104a-wm.f11
+PROJECT     = asg1
+LINTOPT  = -D__EXTENSIONS__ -Xa -fd -m -u -x -errchk=%all,no%longptr64
 
-parser.c parser.h : parser.y
-	cid + parser.y
-	bison -dtv parser.y -o parser.c
+all : ${EXECBIN}
+	- checksource ${ALLSOURCES}
 
-printtokens : printtokens.c parser.c parser.h
-	cid + printtokens.c
-	${LINT} printtokens.c
-	${GCC} printtokens.c parser.c -o printtokens
+lint : ${SOURCES}
+	for cprog in ${SOURCES} \
+	; do echo lint ${LINTOPT} $$cprog \
+	; lint ${LINTOPT} $$cprog \
+	; done
 
-test-strhash : test-strhash.c strhash.h strhash.c
-	cid + test-strhash.c strhash.h strhash.c
-	${LINT} test-strhash.c strhash.c
-	${GCC} test-strhash.c strhash.c -o test-strhash
+${EXECBIN} : ${OBJECTS}
+	${COMPILE} -o $@ ${OBJECTS}
 
-% : %.c
+%.o : %.c
 	cid + $<
-	${LINT} $<
-	${GCC} $< -o $@
+	${COMPILE} -c $<
 
-lis : all printtokens.output addresses.output macros.output \
-	   test-strhash.output Makefile
-	mkpspdf ${LISTING} parser.y parser.h \
-	   printtokens.c printtokens.output \
-	   addresses.c addresses.output \
-	   macros.c macros.output \
-	   test-strhash.c strhash.h strhash.c test-strhash.output \
-	   Makefile
+ci : ${ALLSOURCES}
+	- checksource ${ALLSOURCES}
+	git commit ${ALLSOURCES}
 
 clean :
-	- rm parser.o parser.h parser.c \
-	     printtokens printtokens.o printtokens.output \
-	     parser.output printtokens.output
+	- rm ${OBJECTS} ${DEPSFILE} core ${EXECBIN}.errs
 
-ci :
-	cid + strhash.h strhash.c make-kw-table.perl \
-	    parser.y printtokens.c Makefile \
+spotless : clean
+	- rm ${EXECBIN} 
 
-%.output : %
-	./$< >$@
+submit : ${ALLSOURCES}
+	- checksource ${ALLSOURCES}
+	submit ${CLASS} ${PROJECT} ${ALLSOURCES}
+	testsubmit ${CLASS} ${PROJECT} ${ALLSOURCES}
+
+deps : ${SOURCE} ${HEADER}
+	@ echo "# ${DEPSFILE} created `LC_TIME=C date`" >${DEPSFILE}
+	${MAKEDEPS} ${SOURCE} | sort | uniq >>${DEPSFILE}
+
+${DEPSFILE} :
+	@ touch ${DEPSFILE}
+	${GMAKE} deps
+
+again :
+	gmake --no-print-directory spotless deps ci all lis
+
+ifeq (${NEEDINCL}, )
+include ${DEPSFILE}
+endif
 
