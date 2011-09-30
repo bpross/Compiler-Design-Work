@@ -39,7 +39,9 @@ stringtable_ref new_stringtable(void){
   return(st);
 }
 
+void debugdump_stringtable(stringtable_ref, FILE*){
 
+}
 stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   hashcode_t h;
   int bucket_number = 0;
