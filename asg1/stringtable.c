@@ -49,7 +49,18 @@ cstring peek_stringtable(stringnode_ref input_node){
 }
 
 
-void debugdump_stringtable(stringtable_ref, FILE*){
+void debugdump_stringtable(stringtable_ref st, FILE* fp){
+  int count = 0;
+  stringnode_ref sn;
+  for(;count < st->size;count++){
+    sn = st->buckets[count];
+    if(sn != NULL){
+      fprintf(fp,"%8d  %12u  \"%s\"\n",count+1,sn->key,sn->data);
+      if(sn->next != NULL)
+        for(sn = sn->next; sn != NULL; sn=sn->next)
+            fprintf(fp,"          %12u  \"%s\"\n",sn->key,sn->data);
+    }
+  }
 }
 stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   hashcode_t h;
@@ -58,7 +69,6 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   stringnode_ref temp_sn;
   double hash_percent_full = 0;
   assert(data != NULL);
-  cstring already_hashed;
 
   printf("data = %s\n", data);
   
