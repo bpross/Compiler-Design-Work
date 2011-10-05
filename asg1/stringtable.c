@@ -53,6 +53,7 @@ void delete_stringtable(stringtable_ref st){
         printf("sn->data = %s\n", sn->data);
         if(sn != NULL){
           tmp_sn = sn->next;
+          free(sn->data);
           free(sn);
           sn = tmp_sn;
         }
