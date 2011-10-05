@@ -92,12 +92,15 @@ void debugdump_stringtable(stringtable_ref st, FILE* fp){
   }
 }
 stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
+  size_t string_len;
   hashcode_t h;
   int bucket_number = 0;
   stringnode_ref sn;
   stringnode_ref temp_sn;
   double hash_percent_full = 0;
   assert(data != NULL);
+  string_len = strlen(data);
+  
 
   h = strhash(data);
   bucket_number = h%st->size;
@@ -125,6 +128,7 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   
   if (temp_sn == NULL){
     sn->key = h;
+    sn->data = calloc(1, (string_len*sizeof(char) ) );
     sn->data = data;
     if(sn->data == NULL){
       return NULL;
