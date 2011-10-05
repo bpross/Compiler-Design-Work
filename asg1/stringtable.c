@@ -39,6 +39,13 @@ stringtable_ref new_stringtable(void){
   return(st);
 }
 
+//stringnode_ref new_stringnode(hashcode_t key, cstring data) {
+//  stringnode_ref sn;
+//  sn = calloc(1, sizeof(stringnode_ref));
+//  sn->key = key;
+//  sn->data = calloc(1,(sizeof(sn->data)
+//}
+
 void delete_stringtable(stringtable_ref st){
   int i;
   stringnode_ref sn;
@@ -85,13 +92,15 @@ void debugdump_stringtable(stringtable_ref st, FILE* fp){
     sn = st->buckets[count];
     if(sn != NULL){
       assert(sn->data != NULL);
-      fprintf(fp,"%8d  %12u  \"%s\"        %p\n",count,sn->key,sn->data,sn);
+      fprintf(fp,"%8d  %12u  \"%s\"\n",count,sn->key,sn->data);
       if(sn->next != NULL)
         for(sn = sn->next; sn != NULL; sn=sn->next)
-            fprintf(fp,"          %12u  \"%s\"         %p\n",sn->key,sn->data,sn);
+            fprintf(fp,"          %12u  \"%s\"\n",sn->key,sn->data);
     }
   }
 }
+
+
 stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   size_t string_len;
   hashcode_t h;
@@ -130,7 +139,7 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   if (temp_sn == NULL){
     sn->key = h;
     sn->data = calloc(1, (string_len*sizeof(char) ) );
-    sn->data = data;
+    strcpy(sn->data,data);
     if(sn->data == NULL){
       return NULL;
     }
@@ -141,7 +150,8 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
 //    already_hashed = peek_stringtable(temp_sn);
 //    printf("Already_hashed = %s\n", already_hashed);
     sn->key = h;
-    sn->data = data;
+    sn->data = calloc(1, (string_len*sizeof(char)));
+    strcpy(sn->data,data);
     stringnode_ref first = st->buckets[bucket_number];
     for (temp_sn = st->buckets[bucket_number]; temp_sn->next != NULL; temp_sn = temp_sn->next);
     temp_sn->next = sn;

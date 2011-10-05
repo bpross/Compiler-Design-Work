@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wait.h>
+#include <unistd.h>
 #include "stringtable.h"
 #include "strhash.h"
 
@@ -59,11 +60,7 @@ void remove_file_ext(char *filename) {
     else {
       fprintf(stderr, "Wrong File Extension\n");
     }
-
   }
-        
-
-
 }
 // Run cpp against the lines of the file.
 void cpplines (FILE *pipe, char *filename) {
@@ -71,8 +68,6 @@ void cpplines (FILE *pipe, char *filename) {
    int tokenct;
    char inputname[LINESIZE];
    char *base = basename(filename);
-   remove_file_ext(base);
-   printf("base: %s\n",base);
    stringtable_ref st = new_stringtable();
    stringnode_ref sn;
    strcpy (inputname, filename);
@@ -103,6 +98,7 @@ void cpplines (FILE *pipe, char *filename) {
          sn = intern_stringtable(st, token);
       }
    }
+   remove_file_ext(base);
    strcat(base,".str");
    FILE *fp = fopen(base,"w");
    debugdump_stringtable(st,fp);
@@ -143,11 +139,44 @@ void eprint_status (char *command, int status) {
 
 int main (int argc, char **argv) {
    progname = basename (argv[0]);
+   int c;
+   int lflag, yflag,dflag,total_args = 0;
+   char *debug_flag;
+   extern char *optarg;
+   extern int optind, optopt;
+
+   while ((c = getopt(argc, argv, ":ly:D:")) != -1) {
+     switch(c) {
+     case 'l':
+       fprintf(stderr,"Debug yylex is turned on\n");
+       lflag = 1;
+       total_args++;
+       break;
+     case 'y':
+       fprintf(stderr,"Debug yyparse is turned on\n");
+       yflag = 1;
+       total_args++;
+       break;
+     case 'D':
+       debug_flag = optarg;
+       dflag = 1;
+       total_args++;
+       break;
+     case '?':
+       fprintf(stderr,"Unrecognized option: -%c\n", optopt);
+     }
+   }
+
    int argi;
-   for (argi = 1; argi < argc; ++argi) {
+   for (argi = total_args; argi < argc; ++argi) {
       char *filename = argv[argi];
       char command[strlen (CPP) + 1 + strlen (filename) + 1];
       strcpy (command, CPP);
+      if(dflag == 1) {
+          strcat (command, " ");
+          strcat (command, "-D ");
+          strcat (command, debug_flag);
+      }
       strcat (command, " ");
       strcat (command, filename);
       printf ("command=\"%s\"\n", command);
