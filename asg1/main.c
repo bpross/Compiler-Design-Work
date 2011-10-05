@@ -36,28 +36,60 @@ void chomp (char *string, char delim) {
    if (*nlpos == delim) *nlpos = '\0';
 }
 
+void remove_file_ext(char *filename) {
+  int dot = 3;
+  int o = 2;
+  int c = 1;
+  size_t len = strlen(filename);
+  if (len == 0) return;
+  char *check = filename + len - dot;
+  if (*check == '.') {
+    check = filename + len - o;
+    if(*check == 'o') {
+      check = filename + len - c;
+      if(*check == 'c') {
+        chomp(filename,'c');
+        chomp(filename,'o');
+        chomp(filename,'.');
+      }
+      else {
+        fprintf(stderr, "Wrong File Extension\n");
+      }
+    }
+    else {
+      fprintf(stderr, "Wrong File Extension\n");
+    }
+
+  }
+        
+
+
+}
 // Run cpp against the lines of the file.
 void cpplines (FILE *pipe, char *filename) {
    int linenr = 1;
    int tokenct;
    char inputname[LINESIZE];
+   char *base = basename(filename);
+   remove_file_ext(base);
+   printf("base: %s\n",base);
    stringtable_ref st = new_stringtable();
    stringnode_ref sn;
    strcpy (inputname, filename);
-//   hashcode_t hashcode = 0;
    for (;;) {
       char buffer[LINESIZE];
       char *fgets_rc = fgets (buffer, LINESIZE, pipe);
       if (fgets_rc == NULL) break;
       chomp (buffer, '\n');
       printf ("%s:line %d: [%s]\n", filename, linenr, buffer);
-      char flags[LINESIZE];
+      //char flags[LINESIZE];
       // http://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html
-      int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"%[^\n]",
-                              &linenr, filename, flags);
-      if (sscanf_rc == 3) {
-         printf ("Directive: line %d, file \"%s\", flags \"%s\"\n",
-                 linenr, filename, flags);
+      int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
+                              &linenr, filename);
+      printf("sscanf_rc: %d\n",sscanf_rc);
+      if (sscanf_rc == 2) {
+         printf ("Directive: line %d, file \"%s\"\n",
+                 linenr, filename);
          continue;
       }
       char *savepos = NULL;
@@ -68,12 +100,13 @@ void cpplines (FILE *pipe, char *filename) {
          if (token == NULL) break;
          printf ("token %d.%d: [%s]\n",
                  linenr, tokenct, token);
-         //hashcode = strhash(token);
-         //printf("Hashcode = %u\n", hashcode);
          sn = intern_stringtable(st, token);
-         
       }
    }
+   strcat(base,".str");
+   FILE *fp = fopen(base,"w");
+   debugdump_stringtable(st,fp);
+   fclose(fp);
 }
 
 // Print signal information.  
