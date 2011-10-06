@@ -165,7 +165,7 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   if(hash_percent_full >= HASH_LIMIT){
     st->size *= 2;
     st->size++;
-    st->buckets = realloc(st->buckets, (sizeof(stringnode_ref) * st->size) );
+    st->buckets =realloc(st->buckets,(sizeof(stringnode_ref)*st->size));
   }
 
   temp_sn = st->buckets[bucket_number];
@@ -188,7 +188,8 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
     sn->data = calloc(1, (string_len*sizeof(char)));
     strcpy(sn->data,data);
     stringnode_ref first = st->buckets[bucket_number];
-    for (temp_sn = st->buckets[bucket_number]; temp_sn->next != NULL; temp_sn = temp_sn->next);
+    for(temp_sn=st->buckets[bucket_number];temp_sn->next!=NULL;
+        temp_sn=temp_sn->next);
     temp_sn->next = sn;
     sn->next = NULL;
     st->entries++;

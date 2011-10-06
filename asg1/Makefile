@@ -20,7 +20,7 @@ SOURCE      = stringtable.c strhash.c main.c
 HEADER      = stringtable.h strhash.h
 EXECBIN     = oc
 OBJECTS     = ${SOURCE:.c=.o}
-OTHERS      = ${MKFILE} README
+OTHERS      = ${MKFILE} README PARTNER
 ALLSOURCES  = ${HEADER} ${SOURCE} ${OTHERS}
 CLASS       = cmps104a-wm.f11
 PROJECT     = asg1
