@@ -81,25 +81,41 @@ cstring peek_stringtable(stringnode_ref input_node){
   return ret_value;
 }
 
+/*This function is used to return the hashcode associated
+  with a string node
+  @param sn: string node to get hash value
+*/
 hashcode_t hashcode_stringtable(stringnode_ref sn){
   hashcode_t hashcode = sn->key;
   return hashcode;
 }
+
+/*This function is used to print the string table to a a file.
+  It prints out in this format:
+  Bucket Number   Hash Code    String
+  @param st: String Table to print out
+  @param fp: file pointer to print the string table to
+*/
 void debugdump_stringtable(stringtable_ref st, FILE* fp){
   int count = 0;
   stringnode_ref sn;
   for(;count < st->size;count++){
+    /*Get the first node in the bucket*/
     sn = st->buckets[count];
     if(sn != NULL){
       assert(sn->data != NULL);
       fprintf(fp,"%8d  %12u  \"%s\"\n",count,sn->key,sn->data);
+      /*Checks to see if the next node is NULL
+        if it is not, print that node and continue
+        checking until NULL is reached */
       if(sn->next != NULL)
         for(sn = sn->next; sn != NULL; sn=sn->next)
+            /*This does not print the bucket number, because it is
+              printed above */
             fprintf(fp,"          %12u  \"%s\"\n",sn->key,sn->data);
     }
   }
 }
-
 
 stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   size_t string_len;
