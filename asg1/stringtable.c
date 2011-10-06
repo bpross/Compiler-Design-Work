@@ -39,11 +39,8 @@ stringtable_ref new_stringtable(void){
   return(st);
 }
 
-//stringnode_ref new_stringnode(hashcode_t key, cstring data) {
-//  stringnode_ref sn;
-//  sn = calloc(1, sizeof(stringnode_ref));
-//  sn->key = key;
-//  sn->data = calloc(1,(sizeof(sn->data)
+//  delete_stringnode() 
+//  frees the entire stringtable
 //}
 
 void delete_stringtable(stringtable_ref st){
@@ -71,7 +68,8 @@ void delete_stringtable(stringtable_ref st){
   free(st->buckets);
   free(st);
 }
-
+// peek_stringtable()
+// allows user to access a single node
 cstring peek_stringtable(stringnode_ref input_node){
   cstring ret_value;
   assert(input_node != NULL);
@@ -101,6 +99,12 @@ void debugdump_stringtable(stringtable_ref st, FILE* fp){
 }
 
 
+/* intern_stringtable()
+ * sn = string node to be added
+ * st = string table
+ * h = new data's hashcode
+ * data = new data being added
+ */
 stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   size_t string_len;
   hashcode_t h;
@@ -111,12 +115,13 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   assert(data != NULL);
   string_len = strlen(data);
   
-
+  /* Get hash for data */
   h = strhash(data);
   bucket_number = h%st->size;
   printf("Bucket Number = %u  Hash = %u  Data = %s\n",bucket_number,h,data);
   
   temp_sn = st->buckets[bucket_number];
+  /* Search through stringtable */
   for(sn = st->buckets[bucket_number]; sn != NULL; sn = sn->next){
     if(sn->key == h){ 
       printf("Bucket found\n");
@@ -126,7 +131,7 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
   }
 
   sn = calloc(1, sizeof(stringnode_ref) );
-
+  /* Check if hash table is full, if it is double it */
   hash_percent_full = (double) st->entries/ (double) st->size;
   if(hash_percent_full >= HASH_LIMIT){
     st->size *= 2;
@@ -136,6 +141,8 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
 
   temp_sn = st->buckets[bucket_number];
   
+  /* Check to see if string has been processed */
+  /* If no collision add it to buckets*/
   if (temp_sn == NULL){
     sn->key = h;
     sn->data = calloc(1, (string_len*sizeof(char) ) );
@@ -146,6 +153,7 @@ stringnode_ref intern_stringtable(stringtable_ref st, cstring data){
     sn->next = NULL;
     st->buckets[bucket_number] = sn;
     st->entries++;
+  /* If there is a collision, add it as the next node */
   }else{
 //    already_hashed = peek_stringtable(temp_sn);
 //    printf("Already_hashed = %s\n", already_hashed);
