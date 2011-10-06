@@ -1,5 +1,3 @@
-// $Id: stringtable.c,v 1.1 2011-09-29 12:30:26-07 - - $
-
 // Use cpp to scan a file and print line numbers.
 // Print out each input line read in, then strtok it for
 // tokens.
@@ -37,6 +35,8 @@ void chomp (char *string, char delim) {
    if (*nlpos == delim) *nlpos = '\0';
 }
 
+// checks to see if the file has a valid extension
+// removes the extension if it is valid
 void remove_file_ext(char *filename) {
   int dot = 3;
   int o = 2;
