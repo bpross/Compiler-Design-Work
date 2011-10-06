@@ -68,20 +68,22 @@ void cpplines (FILE *pipe, char *filename) {
    int tokenct;
    char inputname[LINESIZE];
    char *base = basename(filename);
+   /* Create new stringtable */
    stringtable_ref st = new_stringtable();
    stringnode_ref sn;
    strcpy (inputname, filename);
+   /* For loop to run through the file */
    for (;;) {
       char buffer[LINESIZE];
+      /* Get next line */
       char *fgets_rc = fgets (buffer, LINESIZE, pipe);
+      /* If next line is NULL, loop is done */
       if (fgets_rc == NULL) break;
+      /* Replace \n with '\0' */
       chomp (buffer, '\n');
-      printf ("%s:line %d: [%s]\n", filename, linenr, buffer);
-      //char flags[LINESIZE];
-      // http://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html
+      /* Scan and clean out symbols we dont want */
       int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
                               &linenr, filename);
-      printf("sscanf_rc: %d\n",sscanf_rc);
       if (sscanf_rc == 2) {
          printf ("Directive: line %d, file \"%s\"\n",
                  linenr, filename);
@@ -89,6 +91,7 @@ void cpplines (FILE *pipe, char *filename) {
       }
       char *savepos = NULL;
       char *bufptr = buffer;
+      /* Run through the line and proccess each token */
       for (tokenct = 1;; ++tokenct) {
          char *token = strtok_r (bufptr, " \t\n", &savepos);
          bufptr = NULL;
@@ -145,6 +148,7 @@ int main (int argc, char **argv) {
    extern char *optarg;
    extern int optind, optopt;
 
+   /* Check to see if there are options */
    while ((c = getopt(argc, argv, ":ly:D:")) != -1) {
      switch(c) {
      case 'l':
@@ -168,7 +172,9 @@ int main (int argc, char **argv) {
    }
 
    int argi;
+   /* Scan through the input file(s) */
    for (argi = total_args; argi < argc; ++argi) {
+      /* Create new char array to hold the filename */
       char *filename = argv[argi];
       char command[strlen (CPP) + 1 + strlen (filename) + 1];
       strcpy (command, CPP);
@@ -180,6 +186,7 @@ int main (int argc, char **argv) {
       strcat (command, " ");
       strcat (command, filename);
       printf ("command=\"%s\"\n", command);
+      /* Make pipe */
       FILE *pipe = popen (command, "r");
       if (pipe == NULL) {
          syswarn (command);
