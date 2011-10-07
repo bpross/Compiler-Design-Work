@@ -168,6 +168,7 @@ int main (int argc, char **argv) {
        break;
      case '?':
        fprintf(stderr,"Unrecognized option: -%c\n", optopt);
+       exit(1);
      }
    }
 
