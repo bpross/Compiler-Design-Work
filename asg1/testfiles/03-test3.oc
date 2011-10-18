@@ -1,9 +1,0 @@
-// $Id: 03-test3.oc,v 1.1 2011-09-15 18:50:16-07 - - $
-
-int a = 3;
-int b = 8;
-int c = a + b;
-a = b + c;
-puti (a);
-putc ('\n');
-

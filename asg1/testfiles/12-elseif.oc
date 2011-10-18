@@ -1,9 +1,0 @@
-// $Id: 12-elseif.oc,v 1.1 2011-09-15 18:50:16-07 - - $
-
-int a = 3;
-
-if (a == 1) puts ("one");
-else if (a == 2) puts ("two");
-else if (a == 3) puts ("three");
-else puts ("many");
-endl ();
