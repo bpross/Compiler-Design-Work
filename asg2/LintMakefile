@@ -1,0 +1,42 @@
+# $Id: Makefile,v 1.1 2008-10-17 19:05:41-07 - - $
+
+CCOPT    = -D__EXTENSIONS__ -Xc -v -g -xO0 -xarch=v8
+LINTOPT  = -D__EXTENSIONS__ -Xa -fd -m -u -x -errchk=%all,no%longptr64
+
+CSOURCES = ${wildcard *.c}
+EXECBINS = ${patsubst %.c, %, ${CSOURCES}}
+SOURCES  = ${CSOURCES} Makefile
+LISTING  = ../lab4-stdio.code.ps
+
+all : ${EXECBINS}
+
+% : %.c
+	cid + $<
+	lint ${LINTOPT} $<
+	cc ${CCOPT} $< -o $@
+
+lint : ${CSOURCES}
+	for cprog in ${CSOURCES} \
+	; do echo lint ${LINTOPT} $$cprog \
+	; lint ${LINTOPT} $$cprog \
+	; done
+
+ci : ${SOURCES}
+	cid + ${SOURCES}
+
+clean :
+	- rm core a.out
+
+spotless : clean
+	- rm ${EXECBINS}
+
+lis : ${SOURCES}
+	mkpspdf ${LISTING} ${SOURCES}
+
+again :
+	gmake spotless
+	gmake ci
+	gmake lint
+	gmake all
+	gmake lis
+
