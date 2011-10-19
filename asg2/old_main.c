@@ -85,8 +85,6 @@ void cpplines (FILE *pipe, char *filename) {
       int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
                               &linenr, filename);
       if (sscanf_rc == 2) {
-         printf ("Directive: line %d, file \"%s\"\n",
-                 linenr, filename);
          continue;
       }
       char *savepos = NULL;
@@ -96,8 +94,6 @@ void cpplines (FILE *pipe, char *filename) {
          char *token = strtok_r (bufptr, " \t\n", &savepos);
          bufptr = NULL;
          if (token == NULL) break;
-         printf ("token %d.%d: [%s]\n",
-                 linenr, tokenct, token);
          sn = intern_stringtable(st, token);
       }
    }
@@ -173,6 +169,8 @@ int main (int argc, char **argv) {
    }
 
    int argi;
+   if (total_args == 0)
+       total_args++;
    /* Scan through the input file(s) */
    for (argi = total_args; argi < argc; ++argi) {
       /* Create new char array to hold the filename */
@@ -186,16 +184,12 @@ int main (int argc, char **argv) {
       }
       strcat (command, " ");
       strcat (command, filename);
-      printf ("command=\"%s\"\n", command);
       /* Make pipe */
       FILE *pipe = popen (command, "r");
       if (pipe == NULL) {
          syswarn (command);
       }else {
          cpplines (pipe, filename);
-         char buffer[100];
-         fgets(buffer,20,pipe);
-         printf("This is a test, first line: %s\n",buffer);
          int pclose_rc = pclose (pipe);
          eprint_status (command, pclose_rc);
       }

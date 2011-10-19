@@ -1,3 +1,5 @@
+// $Id: cppstrtok.c,v 1.7 2011-09-28 13:51:18-07 - - $
+
 // Use cpp to scan a file and print line numbers.
 // Print out each input line read in, then strtok it for
 // tokens.
@@ -9,9 +11,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wait.h>
-#include <unistd.h>
-#include "stringtable.h"
-#include "strhash.h"
 
 int exit_status = EXIT_SUCCESS;
 char *progname;
@@ -35,77 +34,36 @@ void chomp (char *string, char delim) {
    if (*nlpos == delim) *nlpos = '\0';
 }
 
-// checks to see if the file has a valid extension
-// removes the extension if it is valid
-void remove_file_ext(char *filename) {
-  int dot = 3;
-  int o = 2;
-  int c = 1;
-  size_t len = strlen(filename);
-  if (len == 0) return;
-  char *check = filename + len - dot;
-  if (*check == '.') {
-    check = filename + len - o;
-    if(*check == 'o') {
-      check = filename + len - c;
-      if(*check == 'c') {
-        chomp(filename,'c');
-        chomp(filename,'o');
-        chomp(filename,'.');
-      }
-      else {
-        fprintf(stderr, "Wrong File Extension\n");
-      }
-    }
-    else {
-      fprintf(stderr, "Wrong File Extension\n");
-    }
-  }
-}
 // Run cpp against the lines of the file.
 void cpplines (FILE *pipe, char *filename) {
    int linenr = 1;
-   int tokenct;
    char inputname[LINESIZE];
-   char *base = basename(filename);
-   /* Create new stringtable */
-   stringtable_ref st = new_stringtable();
-   stringnode_ref sn;
    strcpy (inputname, filename);
-   /* For loop to run through the file */
    for (;;) {
       char buffer[LINESIZE];
-      /* Get next line */
       char *fgets_rc = fgets (buffer, LINESIZE, pipe);
-      /* If next line is NULL, loop is done */
       if (fgets_rc == NULL) break;
-      /* Replace \n with '\0' */
       chomp (buffer, '\n');
-      /* Scan and clean out symbols we dont want */
-      int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
-                              &linenr, filename);
-      if (sscanf_rc == 2) {
-         printf ("Directive: line %d, file \"%s\"\n",
-                 linenr, filename);
+      printf ("%s:line %d: [%s]\n", filename, linenr, buffer);
+      char flags[LINESIZE];
+      // http://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html
+      int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"%[^\n]",
+                              &linenr, filename, flags);
+      if (sscanf_rc == 3) {
+         printf ("Directive: line %d, file \"%s\", flags \"%s\"\n",
+                 linenr, filename, flags);
          continue;
       }
       char *savepos = NULL;
       char *bufptr = buffer;
-      /* Run through the line and proccess each token */
-      for (tokenct = 1;; ++tokenct) {
+      for (int tokenct = 1;; ++tokenct) {
          char *token = strtok_r (bufptr, " \t\n", &savepos);
          bufptr = NULL;
          if (token == NULL) break;
          printf ("token %d.%d: [%s]\n",
                  linenr, tokenct, token);
-         sn = intern_stringtable(st, token);
       }
    }
-   remove_file_ext(base);
-   strcat(base,".str");
-   FILE *fp = fopen(base,"w");
-   debugdump_stringtable(st,fp);
-   fclose(fp);
 }
 
 // Print signal information.  
@@ -142,60 +100,18 @@ void eprint_status (char *command, int status) {
 
 int main (int argc, char **argv) {
    progname = basename (argv[0]);
-   int c;
-   int lflag, yflag,dflag,total_args = 0;
-   char *debug_flag;
-   extern char *optarg;
-   extern int optind, optopt;
-
-   /* Check to see if there are options */
-   while ((c = getopt(argc, argv, ":ly:D:")) != -1) {
-     switch(c) {
-     case 'l':
-       fprintf(stderr,"Debug yylex is turned on\n");
-       lflag = 1;
-       total_args++;
-       break;
-     case 'y':
-       fprintf(stderr,"Debug yyparse is turned on\n");
-       yflag = 1;
-       total_args++;
-       break;
-     case 'D':
-       debug_flag = optarg;
-       dflag = 1;
-       total_args++;
-       break;
-     case '?':
-       fprintf(stderr,"Unrecognized option: -%c\n", optopt);
-       exit(1);
-     }
-   }
-
-   int argi;
-   /* Scan through the input file(s) */
-   for (argi = total_args; argi < argc; ++argi) {
-      /* Create new char array to hold the filename */
+   for (int argi = 1; argi < argc; ++argi) {
       char *filename = argv[argi];
       char command[strlen (CPP) + 1 + strlen (filename) + 1];
       strcpy (command, CPP);
-      if(dflag == 1) {
-          strcat (command, " ");
-          strcat (command, "-D ");
-          strcat (command, debug_flag);
-      }
       strcat (command, " ");
       strcat (command, filename);
       printf ("command=\"%s\"\n", command);
-      /* Make pipe */
       FILE *pipe = popen (command, "r");
       if (pipe == NULL) {
          syswarn (command);
       }else {
          cpplines (pipe, filename);
-         char buffer[100];
-         fgets(buffer,20,pipe);
-         printf("This is a test, first line: %s\n",buffer);
          int pclose_rc = pclose (pipe);
          eprint_status (command, pclose_rc);
       }
@@ -203,3 +119,8 @@ int main (int argc, char **argv) {
    return EXIT_SUCCESS;
 }
 
+//TEST// cid + foo*.*
+//TEST// runprog -x cppstrtok.lis cppstrtok foo.oc
+//TEST// catnv foo*.* >cppstrtok.input
+//TEST// mkpspdf cppstrtok.ps cppstrtok.c cppstrtok.c.log \
+//TEST//        cppstrtok.input cppstrtok.lis
