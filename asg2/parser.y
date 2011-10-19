@@ -1,90 +1,60 @@
-/* $Id: parser.y,v 1.1 2011-08-31 19:28:12-07 - - $
+%{
+// $Id: parser.y,v 1.6 2011-08-31 17:54:03-07 - - $
 
-/*
-* Prototype parser for c0 for use in assignment 2 (the scanner).
-*
-* To use this file, copy it into your directory then translate it
-* into C with the command:
-*
-*    bison -dtv parser.y -o parser.c
-*
-* Generated files are:
-*
-*    parser.h - a header file containing the #define symbols that
-*       you need to use with your scanner.  Note that this file must
-*       be included AFTER the file typedefing YYSTYPE.
-*
-*    parser.c - a parser for the grammar, which you will not really
-*       want to examine in a lot of detail and should be treated as
-*       a machine code file.  This will need to be linked into your
-*       code.
-*
-* In project 3, you will discard this file and replace it with the
-* parser that you write.
-*
-*/
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 
-%token  TOK_IDENT TOK_ARRAY
-%token  TOK_CHAR_LIT TOK_INT_LIT TOK_STRING_LIT
-%token  TOK_WHILE TOK_IF TOK_ELSE TOK_RETURN TOK_NEW
-%token  TOK_VOID TOK_BOOL TOK_CHAR TOK_INT
-%token  TOK_STRUCT TOK_STRING TOK_UNCHECKED_TYPE
-%token  TOK_FALSE TOK_TRUE TOK_NULL
-%token  TOK_EQ TOK_NE TOK_GT TOK_GE TOK_LT TOK_LE
+#include "lyutils.h"
+#include "astree.h"
+#include "astree.rep.h"
 
-%start program
+#define YYDEBUG 1
+#define YYERROR_VERBOSE 1
+#define YYPRINT yyprint
+#define YYMALLOC yycalloc
+
+static void *yycalloc (size_t size);
+
+%}
+
+%debug
+%defines
+%error-verbose
+%token-table
+
+%token  ROOT IDENT NUMBER
+
+%right  '='
+%left   '+' '-'
+%left   '*' '/'
+%right  '^'
+%right  POS "u+" NEG "u-"
+
+%start  program
 
 %%
 
-program : program token
-        |
+program : stmtseq               { $$ = $1; }
         ;
 
-token   : TOK_IDENT
-        | TOK_BOOL_LIT
-        | TOK_CHAR_LIT
-        | TOK_INT_LIT
-        | TOK_STRING_LIT
-        | TOK_CHAR
-        | TOK_WHILE
-        | TOK_IF
-        | TOK_ELSE
-        | TOK_RETURN
-        | TOK_NEW
-        | TOK_VOID
-        | TOK_BOOL
-        | TOK_CHAR
-        | TOK_INT
-        | TOK_STRUCT
-        | TOK_STRING
-        | TOK_UNCHECKED_TYPE
-        | TOK_FALSE
-        | TOK_TRUE
-        | TOK_NULL
-        | '('
-        | ')'
-        | '['
-        | ']'
-        | '{'
-        | '}'
-        | ':'
-        | ';'
-        | ','
-        | '='
-        | TOK_EQ
-        | TOK_NE
-        | TOK_GT
-        | TOK_GE
-        | TOK_LT
-        | TOK_LE
-        | '+'
-        | '-'
-        | '*'
-        | '/'
-        | '%'
-        | '.'
-        | '!'
-        | '@'
+stmtseq : stmtseq expr ';'      { freeast ($3); $$ = adopt1 ($1, $2); }
+        | stmtseq error ';'     { freeast ($3); $$ = $1; }
+        | stmtseq ';'           { freeast ($2); $$ = $1; }
+        |                       { $$ = new_parseroot(); }
+        ;
+
+expr    : expr '=' expr         { $$ = adopt2 ($2, $1, $3); }
+        | expr '+' expr         { $$ = adopt2 ($2, $1, $3); }
+        | expr '-' expr         { $$ = adopt2 ($2, $1, $3); }
+        | expr '*' expr         { $$ = adopt2 ($2, $1, $3); }
+        | expr '/' expr         { $$ = adopt2 ($2, $1, $3); }
+        | expr '^' expr         { $$ = adopt2 ($2, $1, $3); }
+        | '+' expr %prec POS    { $$ = adopt1sym ($1, $2, POS); }
+        | '-' expr %prec NEG    { $$ = adopt1sym ($1, $2, NEG); }
+        | '(' expr ')'          { freeast2 ($1, $3); $$ = $2; }
+        | IDENT                 { $$ = $1; }
+        | NUMBER                { $$ = $1; }
         ;
 
 %%
@@ -92,4 +62,13 @@ token   : TOK_IDENT
 const char *get_yytname (int symbol) {
    return yytname [YYTRANSLATE (symbol)];
 }
+
+static void *yycalloc (size_t size) {
+   void *result = calloc (1, size);
+   assert (result != NULL);
+   return result;
+}
+
+// LINTED(static unused)
+RCSC(PARSER_Y,"$Id: parser.y,v 1.6 2011-08-31 17:54:03-07 - - $")
 

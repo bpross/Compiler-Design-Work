@@ -71,14 +71,13 @@ int main (int argc, char **argv) {
    struct options options = {FALSE, FALSE};
    int parsecode = 0;
    set_execname (argv[0]);
-   DEBUGSTMT ('m',
-      for (int argi = 0; argi < argc; ++argi) {
-         eprintf ("%s%c", argv[argi], argi < argc - 1 ? ' ' : '\n');
-      }
-   );
    scan_opts (argc, argv, &options);
    scanner_setecho (options.echoinput);
-   parsecode = yyparse();
+   int token;
+   for (token = yylex(); token != 0; token=yylex()){
+      printf("token %d: type %s, name %s\n",token, get_yytname(token), yytext);
+   }
+   //parsecode = yyparse();
    if (parsecode) {
       errprintf ("%:parse failed (%d)\n", parsecode);
    }else {

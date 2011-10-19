@@ -28,7 +28,7 @@ ALLGENS     = ${HYGEN} ${CGENS}
 LREPORT     = yylex.output
 YREPORT     = yyparse.output
 EXECBIN     = oc
-OBJECTS     = ${SOURCE:.c=.o} ${CYGEN:.c=.o} ${CLGEN:.c=.0}
+OBJECTS     = ${SOURCE:.c=.o} ${CYGEN:.c=.o} ${CLGEN:.c=.o}
 OTHERS      = ${MKFILE} README PARTNER
 ALLSOURCES  = ${HEADER} ${SOURCE} ${OTHERS} ${ALLGENS}
 CLASS       = cmps104a-wm.f11
@@ -51,7 +51,7 @@ ${EXECBIN} : ${OBJECTS}
 	${COMPILE} -c $<
 
 ${CLGEN} : ${LSOURCES}
-	flex -o ${CLGEN} ${LSOURCES} 2>${LREPORT}
+	flex -o${CLGEN} ${LSOURCES} 2>${LREPORT}
 	- grep -v '^  ' ${LREPORT}
 	- (perl -e 'print "="x65,"\n"'; cat lex.backup) >>${LREPORT} 
 	- rm lex.backup

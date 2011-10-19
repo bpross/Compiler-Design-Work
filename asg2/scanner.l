@@ -1,4 +1,5 @@
 %{
+// $Id: scanner.l,v 1.6 2011-08-31 18:10:49-07 - - $
 
 #include <stdlib.h>
 
@@ -59,4 +60,7 @@ int yywrap (void){
    if (yy_flex_debug) eprintf ("yywrap() return %d\n", TRUE);
    return TRUE;
 }
+
+// LINTED(static unused)
+RCSC(SCANNER_L,"$Id: scanner.l,v 1.6 2011-08-31 18:10:49-07 - - $")
 
