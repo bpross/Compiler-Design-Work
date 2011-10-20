@@ -39,19 +39,77 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     ROOT = 258,
-     IDENT = 259,
-     NUMBER = 260,
-     NEG = 263,
-     POS = 264
+     TOK_VOID = 258,
+     TOK_BOOL = 259,
+     TOK_CHAR = 260,
+     TOK_INT = 261,
+     TOK_STRING = 262,
+     TOK_IF = 263,
+     TOK_ELSE = 264,
+     TOK_WHILE = 265,
+     TOK_RETURN = 266,
+     TOK_STRUCT = 267,
+     TOK_FALSE = 268,
+     TOK_TRUE = 269,
+     TOK_NULL = 270,
+     TOK_NEW = 271,
+     TOK_ARRAY = 272,
+     TOK_EQ = 273,
+     TOK_NE = 274,
+     TOK_LT = 275,
+     TOK_LE = 276,
+     TOK_GT = 277,
+     TOK_GE = 278,
+     TOK_IDENT = 279,
+     TOK_INTCON = 280,
+     TOK_CHARCON = 281,
+     TOK_STRINGCON = 282,
+     TOK_BLOCK = 283,
+     TOK_CALL = 284,
+     TOK_IFELSE = 285,
+     TOK_INITDECL = 286,
+     TOK_POS = 287,
+     TOK_NEG = 288,
+     TOK_NEWARRAY = 289,
+     TOK_TYPEID = 290,
+     TOK_FIELD = 291
    };
 #endif
 /* Tokens.  */
-#define ROOT 258
-#define IDENT 259
-#define NUMBER 260
-#define NEG 263
-#define POS 264
+#define TOK_VOID 258
+#define TOK_BOOL 259
+#define TOK_CHAR 260
+#define TOK_INT 261
+#define TOK_STRING 262
+#define TOK_IF 263
+#define TOK_ELSE 264
+#define TOK_WHILE 265
+#define TOK_RETURN 266
+#define TOK_STRUCT 267
+#define TOK_FALSE 268
+#define TOK_TRUE 269
+#define TOK_NULL 270
+#define TOK_NEW 271
+#define TOK_ARRAY 272
+#define TOK_EQ 273
+#define TOK_NE 274
+#define TOK_LT 275
+#define TOK_LE 276
+#define TOK_GT 277
+#define TOK_GE 278
+#define TOK_IDENT 279
+#define TOK_INTCON 280
+#define TOK_CHARCON 281
+#define TOK_STRINGCON 282
+#define TOK_BLOCK 283
+#define TOK_CALL 284
+#define TOK_IFELSE 285
+#define TOK_INITDECL 286
+#define TOK_POS 287
+#define TOK_NEG 288
+#define TOK_NEWARRAY 289
+#define TOK_TYPEID 290
+#define TOK_FIELD 291
 
 
 

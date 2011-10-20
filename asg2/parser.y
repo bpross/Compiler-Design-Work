@@ -1,11 +1,16 @@
 %{
 // Dummy parser for scanner project.
+#include "lyutils.h"
+#include "astree.h"
+#include "astree.rep.h"
 %}
 
 %debug
 %defines
 %error-verbose
 %token-table
+
+%token ROOT
 
 %token TOK_VOID TOK_BOOL TOK_CHAR TOK_INT TOK_STRING
 %token TOK_IF TOK_ELSE TOK_WHILE TOK_RETURN TOK_STRUCT
@@ -18,11 +23,12 @@
 
 %start program
 
+
 %%
 
 program : program token | ;
 token   : '(' | ')' | '[' | ']' | '{' | '}' | ';' | ',' | '.'
-        | '=' | '+' | '-' | '*' | '/' | '%' | '!'
+        | '=' | '+' | '-' | '*' | '/' | '%' | '!' 
         | TOK_VOID | TOK_BOOL | TOK_CHAR | TOK_INT | TOK_STRING
         | TOK_IF | TOK_ELSE | TOK_WHILE | TOK_RETURN | TOK_STRUCT
         | TOK_FALSE | TOK_TRUE | TOK_NULL | TOK_NEW | TOK_ARRAY

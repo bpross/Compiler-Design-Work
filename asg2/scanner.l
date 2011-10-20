@@ -36,6 +36,8 @@ IDENT           ({LETTER}({LETTER}|{DIGIT})*)
 
 {NUMBER}        { return yylval_token (NUMBER); }
 {IDENT}         { return yylval_token (IDENT); }
+{ROOT}          { return yylval_token (ROOT); }
+
 
 "="             { return yylval_token ('='); }
 "+"             { return yylval_token ('+'); }
@@ -48,18 +50,18 @@ IDENT           ({LETTER}({LETTER}|{DIGIT})*)
 ";"             { return yylval_token (';'); }
 "["             { return yylval_token ('['); }
 "]"             { return yylval_token (']'); }
-"[]"            { return yylval_token (TOK_NEWARRAY); }
 ","             { return yylval_token (','); }
 "."             { return yylval_token ('.'); }
+"!"             { return yylval_token ('!'); }
+"{"             { return yylval_token ('{'); }
+"}"             { return yylval_token ('}'); }
+"[]"            { return yylval_token (TOK_NEWARRAY); }
 "=="            { return yylval_token (TOK_EQ); }
 "!="            { return yylval_token (TOK_NE); }
 "<"             { return yylval_token (TOK_LT); }
 ">"             { return yylval_token (TOK_GT); }
-"!"             { return yylval_token ('!'); }
 "<="            { return yylval_token (TOK_LE); }
 ">="            { return yylval_token (TOK_GE); }
-"{"             { return yylval_token ('{'); }
-"}"             { return yylval_token ('}'); }
 
 
 "void"          { return yylval_token (TOK_VOID); }
