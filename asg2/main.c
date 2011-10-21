@@ -7,7 +7,6 @@
 #include <unistd.h>
 
 #include "astree.h"
-#include "emit.h"
 #include "lyutils.h"
 #include "auxlib.h"
 
@@ -82,7 +81,7 @@ int main (int argc, char **argv) {
       errprintf ("%:parse failed (%d)\n", parsecode);
    }else {
       DEBUGSTMT ('a', dump_astree (stderr, yyparse_astree); );
-      emit_sm_code (yyparse_astree);
+//      emit_sm_code (yyparse_astree);
    }
    freeast (yyparse_astree);
    yyin_cpp_pclose();
