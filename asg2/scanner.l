@@ -1,3 +1,4 @@
+// I have all my comments like this
 %{
 // $Id: scanner.l,v 1.6 2011-08-31 18:10:49-07 - - $
 
@@ -20,22 +21,20 @@
 %option perf-report
 %option verbose
 
-// ALL of my comments will start with this
 
-// I changed number to be TOK_INT, which is one or more digits
 LETTER          [A-Za-z_]
 DIGIT           [0-9]
 TOK_INT         ({DIGIT}+)
 TOK_IDENT       ({LETTER}({LETTER}|{DIGIT})*)
-// I added multiple character tokens up here cuz the TA said so
-// I talked to other kids in the class and their programs are
-// working without these. If it's too much of a pain in the ass
-// redo it like the shit that's commented out below
+// The TA said to do define multiple characters up here
+// Other kids in the class were doing it the same way they did single
+// Char's though. If it's not working switch back to the way we had it
 TOK_NEWARRAY    \[\]
 TOK_EQ          ==
 TOK_NE          !=
-TOK_LT          <=
-TOK_GT          >=
+TOK_LE          <=
+TOK_GE          >=
+
 
 %%
 
@@ -43,14 +42,15 @@ TOK_GT          >=
 [ \t]+          { IGNORE (white space) }
 \n              { scanner_newline(); }
 
-// ADDED these, might be easier to do it the way we have below though
+// Take this out if it doesn't work.
+
 {TOK_INT}       { return yylval_token (TOK_INT); }
 {TOK_IDENT}     { return yylval_token (TOK_IDENT); }
 {TOK_NEWARRAY}  { return yylval_token (TOK_NEWARRAY); }
-{TOK_EQ}        { return yylval_token (TOK_EQ); }
-{TOK_NE}        { return yylval_token (TOK_NE); }
-{TOK_LT}        { return yylval_token (TOK_LT); }
-{TOK_GT}        { return yylval_token (TOK_GT); }
+{TOK_EQ}  { return yylval_token (TOK_EQ); }
+{TOK_NE}  { return yylval_token (TOK_NE); }
+{TOK_LE}  { return yylval_token (TOK_LE); }
+{TOK_GE}  { return yylval_token (TOK_GE); }
 
 
 "="             { return yylval_token ('='); }
@@ -71,14 +71,6 @@ TOK_GT          >=
 "}"             { return yylval_token ('}'); }
 "<"             { return yylval_token (TOK_LT); }
 ">"             { return yylval_token (TOK_GT); }
-/*
-"[]"            { return yylval_token (TOK_NEWARRAY); }
-"=="            { return yylval_token (TOK_EQ); }
-"!="            { return yylval_token (TOK_NE); }
-"<="            { return yylval_token (TOK_LE); }
-">="            { return yylval_token (TOK_GE); }
-*/
-
 "void"          { return yylval_token (TOK_VOID); }
 "bool"          { return yylval_token (TOK_BOOL); }
 "char"          { return yylval_token (TOK_CHAR); }
@@ -95,8 +87,6 @@ TOK_GT          >=
 "new"           { return yylval_token (TOK_NEW); }
 
 
-{NOTNUMBER}     { scanner_badtoken (yytext);
-                  return yylval_token (NUMBER); }
 
 .               { scanner_badchar (*yytext); }
 
@@ -109,6 +99,4 @@ int yywrap (void){
    return TRUE;
 }
 
-// LINTED(static unused)
-RCSC(SCANNER_L,"$Id: scanner.l,v 1.6 2011-08-31 18:10:49-07 - - $")
 
