@@ -16,8 +16,8 @@ COMPILE  = gcc -g -O0 -Wall -Wextra -Werror
 MAKEDEPS = gcc -MM
 endif
 
-SOURCE      = stringtable.c strhash.c main.c astree.c lyutils.c auxlib.c emit.c
-HEADER      = stringtable.h strhash.h astree.h astree.rep.h lyutils.h auxlib.h emit.h
+SOURCE      = stringtable.c strhash.c main.c astree.c lyutils.c auxlib.c 
+HEADER      = stringtable.h strhash.h astree.h astree.rep.h lyutils.h auxlib.h 
 LSOURCES    = scanner.l
 YSOURCES    = parser.y
 CLGEN       = yylex.c
@@ -32,7 +32,7 @@ OBJECTS     = ${SOURCE:.c=.o} ${CYGEN:.c=.o} ${CLGEN:.c=.o}
 OTHERS      = ${MKFILE} README PARTNER
 ALLSOURCES  = ${HEADER} ${SOURCE} ${OTHERS} ${ALLGENS}
 CLASS       = cmps104a-wm.f11
-PROJECT     = asg1
+PROJECT     = asg2
 LINTOPT     = -D__EXTENSIONS__ -Xa -fd -m -u -x -errchk=%all,no%longptr64
 
 all : ${EXECBIN}
