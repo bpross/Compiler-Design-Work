@@ -20,11 +20,18 @@
 %option perf-report
 %option verbose
 
+// ALL of my comments will start with this
+
+// I changed number to be TOK_INT, which is one or more digits
 LETTER          [A-Za-z_]
 DIGIT           [0-9]
 TOK_INT         ({DIGIT}+)
 TOK_IDENT       ({LETTER}({LETTER}|{DIGIT})*)
-TOK_ARRAY       \[\]
+// I added multiple character tokens up here cuz the TA said so
+// I talked to other kids in the class and their programs are
+// working without these. If it's too much of a pain in the ass
+// redo it like the shit that's commented out below
+TOK_NEWARRAY    \[\]
 TOK_EQ          ==
 TOK_NE          !=
 TOK_LT          <=
@@ -36,8 +43,14 @@ TOK_GT          >=
 [ \t]+          { IGNORE (white space) }
 \n              { scanner_newline(); }
 
+// ADDED these, might be easier to do it the way we have below though
 {TOK_INT}       { return yylval_token (TOK_INT); }
 {TOK_IDENT}     { return yylval_token (TOK_IDENT); }
+{TOK_NEWARRAY}  { return yylval_token (TOK_NEWARRAY); }
+{TOK_EQ}        { return yylval_token (TOK_EQ); }
+{TOK_NE}        { return yylval_token (TOK_NE); }
+{TOK_LT}        { return yylval_token (TOK_LT); }
+{TOK_GT}        { return yylval_token (TOK_GT); }
 
 
 "="             { return yylval_token ('='); }
@@ -58,11 +71,13 @@ TOK_GT          >=
 "}"             { return yylval_token ('}'); }
 "<"             { return yylval_token (TOK_LT); }
 ">"             { return yylval_token (TOK_GT); }
+/*
 "[]"            { return yylval_token (TOK_NEWARRAY); }
 "=="            { return yylval_token (TOK_EQ); }
 "!="            { return yylval_token (TOK_NE); }
 "<="            { return yylval_token (TOK_LE); }
 ">="            { return yylval_token (TOK_GE); }
+*/
 
 "void"          { return yylval_token (TOK_VOID); }
 "bool"          { return yylval_token (TOK_BOOL); }
