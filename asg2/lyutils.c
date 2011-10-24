@@ -77,7 +77,8 @@ void scanner_badchar (unsigned char bad) {
    errprintf ("%:%s: %d: invalid source character (%s)\n",
               filename_stack.filenames[filename_stack.last_filenr],
               scan_linenr, char_rep);
-   fprintf(yytok,"    %d  %d.%d -1 BAD_TOKEN  (%s)\n",scan_linenr, scan_offset, yyleng, char_rep);
+   fprintf(yytok,"    %d  %d.%d -1 BAD_TOKEN  (%s)\n",
+           scan_linenr, scan_offset, yyleng, char_rep);
 }
 
 void scanner_badtoken (char *lexeme) {
@@ -94,7 +95,9 @@ int yylval_token (int symbol) {
 }
 
 void print_tok(int symbol) {
-    fprintf(yytok,"    %d  %d.%d  %d  %s  (%s)\n",scan_linenr,scan_offset, yyleng, symbol, get_yytname(symbol), yytext);
+    fprintf(yytok,"    %d  %d.%d  %d  %s  (%s)\n",
+            scan_linenr,scan_offset, yyleng, symbol, 
+            get_yytname(symbol), yytext);
 }
 
 int yyprint_token(int symbol){
