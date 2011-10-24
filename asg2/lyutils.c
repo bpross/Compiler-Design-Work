@@ -77,6 +77,7 @@ void scanner_badchar (unsigned char bad) {
    errprintf ("%:%s: %d: invalid source character (%s)\n",
               filename_stack.filenames[filename_stack.last_filenr],
               scan_linenr, char_rep);
+   fprintf(yytok,"    %d  %d.%d -1 BAD_TOKEN  (%s)\n",scan_linenr, scan_offset, yyleng, char_rep);
 }
 
 void scanner_badtoken (char *lexeme) {
@@ -90,6 +91,16 @@ int yylval_token (int symbol) {
    yylval = new_astree (symbol, filename_stack.last_filenr,
                         scan_linenr, offset, yytext);
    return symbol;
+}
+
+void print_tok(int symbol) {
+    fprintf(yytok,"    %d  %d.%d  %d  %s  (%s)\n",scan_linenr,scan_offset, yyleng, symbol, get_yytname(symbol), yytext);
+}
+
+int yyprint_token(int symbol){
+    yylval_token(symbol);
+    print_tok(symbol);
+    return symbol;
 }
 
 astree new_parseroot (void) {
@@ -111,6 +122,7 @@ void scanner_include (void) {
       printf (";#include \"%s\"\n", newfilename);
       scanner_newfilename (newfilename);
       scan_linenr = linenr;
+      fprintf(yytok, "# %d \"%s\"\n",linenr, newfilename);
       DEBUGF ('m', "filename=%s, scan_linenr=%d\n",
               filename_stack.filenames[filename_stack.last_filenr],
               scan_linenr);

@@ -11,6 +11,7 @@
 #define YYEOF 0
 
 extern FILE *yyin;
+FILE *yytok;
 extern astree yyparse_astree;
 extern int yyin_linenr;
 extern char *yytext;
@@ -33,7 +34,7 @@ void scanner_useraction (void);
 
 astree new_parseroot (void);
 int yylval_token (int symbol);
-
+int yyprint_token(int symbol);
 void scanner_include (void);
 
 #define YYSTYPE astree
