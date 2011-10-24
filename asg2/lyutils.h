@@ -33,7 +33,7 @@ void scanner_useraction (void);
 
 astree new_parseroot (void);
 int yylval_token (int symbol);
-
+int yyprint_token(int symbol);
 void scanner_include (void);
 
 #define YYSTYPE astree

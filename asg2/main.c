@@ -79,7 +79,6 @@ void yyin_cpp_popen (char *filename) {
    stringtable_ref st = new_stringtable();
    stringnode_ref sn;
    for (token = yylex(); token != 0; token=yylex()){
-      printf("token %d: type %s, name %s\n",token, get_yytname(token), yytext);
       strcpy(toke,get_yytname(token));
       sn = intern_stringtable(st, toke);
    }

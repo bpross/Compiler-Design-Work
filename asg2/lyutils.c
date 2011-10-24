@@ -92,6 +92,12 @@ int yylval_token (int symbol) {
    return symbol;
 }
 
+int yyprint_token(int symbol){
+    yylval_token(symbol);
+    printf("token %d: type %s, name %s\n",symbol, get_yytname(symbol), yytext);
+    return symbol;
+}
+
 astree new_parseroot (void) {
    yyparse_astree = new_astree (TOK_ROOT, 0, 0, 0, "<<TOK_ROOT>>");
    return yyparse_astree;
