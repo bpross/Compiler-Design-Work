@@ -66,77 +66,79 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     TOK_VOID = 258,
-     TOK_BOOL = 259,
-     TOK_CHAR = 260,
-     TOK_INT = 261,
-     TOK_STRING = 262,
-     TOK_IF = 263,
-     TOK_ELSE = 264,
-     TOK_WHILE = 265,
-     TOK_RETURN = 266,
-     TOK_STRUCT = 267,
-     TOK_FALSE = 268,
-     TOK_TRUE = 269,
-     TOK_NULL = 270,
-     TOK_NEW = 271,
-     TOK_ARRAY = 272,
-     TOK_EQ = 273,
-     TOK_NE = 274,
-     TOK_LT = 275,
-     TOK_LE = 276,
-     TOK_GT = 277,
-     TOK_GE = 278,
-     TOK_IDENT = 279,
-     TOK_INTCON = 280,
-     TOK_CHARCON = 281,
-     TOK_STRINGCON = 282,
-     TOK_BLOCK = 283,
-     TOK_CALL = 284,
-     TOK_IFELSE = 285,
-     TOK_INITDECL = 286,
-     TOK_POS = 287,
-     TOK_NEG = 288,
-     TOK_NEWARRAY = 289,
-     TOK_TYPEID = 290,
-     TOK_FIELD = 291
+     TOK_ROOT = 258,
+     TOK_VOID = 259,
+     TOK_BOOL = 260,
+     TOK_CHAR = 261,
+     TOK_INT = 262,
+     TOK_STRING = 263,
+     TOK_IF = 264,
+     TOK_ELSE = 265,
+     TOK_WHILE = 266,
+     TOK_RETURN = 267,
+     TOK_STRUCT = 268,
+     TOK_FALSE = 269,
+     TOK_TRUE = 270,
+     TOK_NULL = 271,
+     TOK_NEW = 272,
+     TOK_ARRAY = 273,
+     TOK_EQ = 274,
+     TOK_NE = 275,
+     TOK_LT = 276,
+     TOK_LE = 277,
+     TOK_GT = 278,
+     TOK_GE = 279,
+     TOK_IDENT = 280,
+     TOK_INTCON = 281,
+     TOK_CHARCON = 282,
+     TOK_STRINGCON = 283,
+     TOK_BLOCK = 284,
+     TOK_CALL = 285,
+     TOK_IFELSE = 286,
+     TOK_INITDECL = 287,
+     TOK_POS = 288,
+     TOK_NEG = 289,
+     TOK_NEWARRAY = 290,
+     TOK_TYPEID = 291,
+     TOK_FIELD = 292
    };
 #endif
 /* Tokens.  */
-#define TOK_VOID 258
-#define TOK_BOOL 259
-#define TOK_CHAR 260
-#define TOK_INT 261
-#define TOK_STRING 262
-#define TOK_IF 263
-#define TOK_ELSE 264
-#define TOK_WHILE 265
-#define TOK_RETURN 266
-#define TOK_STRUCT 267
-#define TOK_FALSE 268
-#define TOK_TRUE 269
-#define TOK_NULL 270
-#define TOK_NEW 271
-#define TOK_ARRAY 272
-#define TOK_EQ 273
-#define TOK_NE 274
-#define TOK_LT 275
-#define TOK_LE 276
-#define TOK_GT 277
-#define TOK_GE 278
-#define TOK_IDENT 279
-#define TOK_INTCON 280
-#define TOK_CHARCON 281
-#define TOK_STRINGCON 282
-#define TOK_BLOCK 283
-#define TOK_CALL 284
-#define TOK_IFELSE 285
-#define TOK_INITDECL 286
-#define TOK_POS 287
-#define TOK_NEG 288
-#define TOK_NEWARRAY 289
-#define TOK_TYPEID 290
-#define TOK_FIELD 291
+#define TOK_ROOT 258
+#define TOK_VOID 259
+#define TOK_BOOL 260
+#define TOK_CHAR 261
+#define TOK_INT 262
+#define TOK_STRING 263
+#define TOK_IF 264
+#define TOK_ELSE 265
+#define TOK_WHILE 266
+#define TOK_RETURN 267
+#define TOK_STRUCT 268
+#define TOK_FALSE 269
+#define TOK_TRUE 270
+#define TOK_NULL 271
+#define TOK_NEW 272
+#define TOK_ARRAY 273
+#define TOK_EQ 274
+#define TOK_NE 275
+#define TOK_LT 276
+#define TOK_LE 277
+#define TOK_GT 278
+#define TOK_GE 279
+#define TOK_IDENT 280
+#define TOK_INTCON 281
+#define TOK_CHARCON 282
+#define TOK_STRINGCON 283
+#define TOK_BLOCK 284
+#define TOK_CALL 285
+#define TOK_IFELSE 286
+#define TOK_INITDECL 287
+#define TOK_POS 288
+#define TOK_NEG 289
+#define TOK_NEWARRAY 290
+#define TOK_TYPEID 291
+#define TOK_FIELD 292
 
 
 
@@ -145,6 +147,9 @@
 #line 1 "parser.y"
 
 // Dummy parser for scanner project.
+#include "lyutils.h"
+#include "astree.h"
+#include "astree.rep.h"
 
 
 /* Enabling traces.  */
@@ -178,7 +183,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 182 "yyparse.c"
+#line 187 "yyparse.c"
 
 #ifdef short
 # undef short
@@ -393,10 +398,10 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   52
+#define YYLAST   53
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  53
+#define YYNTOKENS  54
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  3
 /* YYNRULES -- Number of rules.  */
@@ -406,7 +411,7 @@ union yyalloc
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   291
+#define YYMAXUTOK   292
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -417,16 +422,16 @@ static const yytype_uint8 yytranslate[] =
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,    52,     2,     2,     2,    51,     2,     2,
-      37,    38,    49,    47,    44,    48,    45,    50,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    43,
-       2,    46,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,    53,     2,     2,     2,    52,     2,     2,
+      38,    39,    50,    48,    45,    49,    46,    51,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    44,
+       2,    47,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,    39,     2,    40,     2,     2,     2,     2,     2,     2,
+       2,    40,     2,    41,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,    41,     2,    42,     2,     2,     2,     2,
+       2,     2,     2,    42,     2,    43,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -443,7 +448,7 @@ static const yytype_uint8 yytranslate[] =
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36
+      35,    36,    37
 };
 
 #if YYDEBUG
@@ -461,25 +466,25 @@ static const yytype_uint8 yyprhs[] =
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      54,     0,    -1,    54,    55,    -1,    -1,    37,    -1,    38,
-      -1,    39,    -1,    40,    -1,    41,    -1,    42,    -1,    43,
-      -1,    44,    -1,    45,    -1,    46,    -1,    47,    -1,    48,
-      -1,    49,    -1,    50,    -1,    51,    -1,    52,    -1,     3,
-      -1,     4,    -1,     5,    -1,     6,    -1,     7,    -1,     8,
-      -1,     9,    -1,    10,    -1,    11,    -1,    12,    -1,    13,
-      -1,    14,    -1,    15,    -1,    16,    -1,    17,    -1,    18,
-      -1,    19,    -1,    20,    -1,    21,    -1,    22,    -1,    23,
-      -1,    24,    -1,    25,    -1,    26,    -1,    27,    -1
+      55,     0,    -1,    55,    56,    -1,    -1,    38,    -1,    39,
+      -1,    40,    -1,    41,    -1,    42,    -1,    43,    -1,    44,
+      -1,    45,    -1,    46,    -1,    47,    -1,    48,    -1,    49,
+      -1,    50,    -1,    51,    -1,    52,    -1,    53,    -1,     4,
+      -1,     5,    -1,     6,    -1,     7,    -1,     8,    -1,     9,
+      -1,    10,    -1,    11,    -1,    12,    -1,    13,    -1,    14,
+      -1,    15,    -1,    16,    -1,    17,    -1,    18,    -1,    19,
+      -1,    20,    -1,    21,    -1,    22,    -1,    23,    -1,    24,
+      -1,    25,    -1,    26,    -1,    27,    -1,    28,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    24,    24,    24,    25,    25,    25,    25,    25,    25,
-      25,    25,    25,    26,    26,    26,    26,    26,    26,    26,
-      27,    27,    27,    27,    27,    28,    28,    28,    28,    28,
-      29,    29,    29,    29,    29,    30,    30,    30,    30,    30,
-      30,    31,    31,    31,    31
+       0,    30,    30,    30,    31,    31,    31,    31,    31,    31,
+      31,    31,    31,    32,    32,    32,    32,    32,    32,    32,
+      33,    33,    33,    33,    33,    34,    34,    34,    34,    34,
+      35,    35,    35,    35,    35,    36,    36,    36,    36,    36,
+      36,    37,    37,    37,    37
 };
 #endif
 
@@ -488,15 +493,15 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "TOK_VOID", "TOK_BOOL", "TOK_CHAR",
-  "TOK_INT", "TOK_STRING", "TOK_IF", "TOK_ELSE", "TOK_WHILE", "TOK_RETURN",
-  "TOK_STRUCT", "TOK_FALSE", "TOK_TRUE", "TOK_NULL", "TOK_NEW",
-  "TOK_ARRAY", "TOK_EQ", "TOK_NE", "TOK_LT", "TOK_LE", "TOK_GT", "TOK_GE",
-  "TOK_IDENT", "TOK_INTCON", "TOK_CHARCON", "TOK_STRINGCON", "TOK_BLOCK",
-  "TOK_CALL", "TOK_IFELSE", "TOK_INITDECL", "TOK_POS", "TOK_NEG",
-  "TOK_NEWARRAY", "TOK_TYPEID", "TOK_FIELD", "'('", "')'", "'['", "']'",
-  "'{'", "'}'", "';'", "','", "'.'", "'='", "'+'", "'-'", "'*'", "'/'",
-  "'%'", "'!'", "$accept", "program", "token", 0
+  "$end", "error", "$undefined", "TOK_ROOT", "TOK_VOID", "TOK_BOOL",
+  "TOK_CHAR", "TOK_INT", "TOK_STRING", "TOK_IF", "TOK_ELSE", "TOK_WHILE",
+  "TOK_RETURN", "TOK_STRUCT", "TOK_FALSE", "TOK_TRUE", "TOK_NULL",
+  "TOK_NEW", "TOK_ARRAY", "TOK_EQ", "TOK_NE", "TOK_LT", "TOK_LE", "TOK_GT",
+  "TOK_GE", "TOK_IDENT", "TOK_INTCON", "TOK_CHARCON", "TOK_STRINGCON",
+  "TOK_BLOCK", "TOK_CALL", "TOK_IFELSE", "TOK_INITDECL", "TOK_POS",
+  "TOK_NEG", "TOK_NEWARRAY", "TOK_TYPEID", "TOK_FIELD", "'('", "')'",
+  "'['", "']'", "'{'", "'}'", "';'", "','", "'.'", "'='", "'+'", "'-'",
+  "'*'", "'/'", "'%'", "'!'", "$accept", "program", "token", 0
 };
 #endif
 
@@ -508,20 +513,20 @@ static const yytype_uint16 yytoknum[] =
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
-     285,   286,   287,   288,   289,   290,   291,    40,    41,    91,
-      93,   123,   125,    59,    44,    46,    61,    43,    45,    42,
-      47,    37,    33
+     285,   286,   287,   288,   289,   290,   291,   292,    40,    41,
+      91,    93,   123,   125,    59,    44,    46,    61,    43,    45,
+      42,    47,    37,    33
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    53,    54,    54,    55,    55,    55,    55,    55,    55,
-      55,    55,    55,    55,    55,    55,    55,    55,    55,    55,
-      55,    55,    55,    55,    55,    55,    55,    55,    55,    55,
-      55,    55,    55,    55,    55,    55,    55,    55,    55,    55,
-      55,    55,    55,    55,    55
+       0,    54,    55,    55,    56,    56,    56,    56,    56,    56,
+      56,    56,    56,    56,    56,    56,    56,    56,    56,    56,
+      56,    56,    56,    56,    56,    56,    56,    56,    56,    56,
+      56,    56,    56,    56,    56,    56,    56,    56,    56,    56,
+      56,    56,    56,    56,    56
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -577,33 +582,33 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-       2,     0,     0,     3,     4,     5,     6,     7,     8,     9,
-      10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
-      20,    21,    22,    23,    24,    25,    26,    27,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    28,    29,    30,
-      31,    32,    33,    34,    35,    36,    37,    38,    39,    40,
-      41,    42,    43
+       2,     0,     0,     0,     3,     4,     5,     6,     7,     8,
+       9,    10,    11,    12,    13,    14,    15,    16,    17,    18,
+      19,    20,    21,    22,    23,    24,    25,    26,    27,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    28,    29,
+      30,    31,    32,    33,    34,    35,    36,    37,    38,    39,
+      40,    41,    42,    43
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,    -1,    -1,     3,     4,     5,     6,     7,     8,     9,
+       0,    -1,    -1,    -1,     4,     5,     6,     7,     8,     9,
       10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
-      20,    21,    22,    23,    24,    25,    26,    27,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    37,    38,    39,
+      20,    21,    22,    23,    24,    25,    26,    27,    28,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    38,    39,
       40,    41,    42,    43,    44,    45,    46,    47,    48,    49,
-      50,    51,    52
+      50,    51,    52,    53
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    54,     0,     3,     4,     5,     6,     7,     8,     9,
-      10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
-      20,    21,    22,    23,    24,    25,    26,    27,    37,    38,
-      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
-      49,    50,    51,    52,    55
+       0,    55,     0,     4,     5,     6,     7,     8,     9,    10,
+      11,    12,    13,    14,    15,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,    26,    27,    28,    38,    39,
+      40,    41,    42,    43,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    53,    56
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1419,7 +1424,7 @@ yyreduce:
     {
       
 /* Line 1267 of yacc.c.  */
-#line 1423 "yyparse.c"
+#line 1428 "yyparse.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1633,7 +1638,7 @@ yyreturn:
 }
 
 
-#line 34 "parser.y"
+#line 40 "parser.y"
 
 
 const char *get_yytname (int symbol) {
