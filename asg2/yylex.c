@@ -300,16 +300,16 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 #define YY_END_OF_BUFFER 45
 static yyconst short int yy_accept[93] =
     {   0,
-        0,    0,   45,   43,    2,    3,   24,    1,   17,   18,
-       14,   12,   22,   13,   23,   15,    4,   19,   27,   11,
-       28,    5,   20,   21,   16,    5,    5,    5,    5,    5,
-        5,    5,    5,    5,    5,    5,   25,   26,    2,    8,
-        1,    4,    9,    7,   10,    5,    6,    5,    5,    5,
-        5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
-        5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
-        5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
-        5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
-        5,    0
+        0,    0,   45,   43,    2,    3,   31,    1,   24,   25,
+       21,   19,   29,   20,   30,   22,   36,   26,   34,   18,
+       35,   42,   27,   28,   23,   42,   42,   42,   42,   42,
+       42,   42,   42,   42,   42,   42,   32,   33,    2,   39,
+        1,   36,   40,   38,   41,   42,   37,   42,   42,   42,
+       42,   10,   42,   42,   42,   42,   42,   42,   42,   42,
+       42,   42,   42,   42,    7,   17,   42,   42,   42,   42,
+       42,   42,    5,    6,   11,   42,   16,   42,   42,   42,
+       15,    4,   42,   14,   42,   42,   42,   12,   13,    8,
+        9,    0
 
     } ;
 
@@ -432,11 +432,11 @@ int yy_flex_debug = 1;
 
 static yyconst short int yy_rule_linenum[44] =
     {   0,
-       36,   37,   38,   40,   41,   42,   43,   44,   45,   46,
-       49,   50,   51,   52,   53,   54,   55,   56,   57,   58,
-       59,   60,   61,   62,   63,   64,   65,   66,   67,   68,
-       69,   70,   71,   72,   73,   74,   75,   76,   77,   78,
-       79,   80,   84
+       36,   37,   38,   41,   42,   43,   44,   45,   46,   47,
+       48,   49,   50,   51,   52,   53,   54,   55,   56,   57,
+       58,   59,   60,   61,   62,   63,   64,   65,   66,   67,
+       68,   69,   70,   71,   72,   73,   74,   75,   76,   77,
+       78,   79,   83
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -450,7 +450,6 @@ char *yytext;
 #line 1 "scanner.l"
 #define INITIAL 0
 #line 2 "scanner.l"
-// $Id: scanner.l,v 1.6 2011-08-31 18:10:49-07 - - $
 
 #include <stdlib.h>
 
@@ -461,7 +460,7 @@ char *yytext;
 #define IGNORE(THING)   { }
 
 #define YY_NO_UNPUT 1
-#line 465 "yylex.c"
+#line 464 "yylex.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -615,7 +614,7 @@ YY_DECL
 #line 34 "scanner.l"
 
 
-#line 619 "yylex.c"
+#line 618 "yylex.c"
 
 	if ( yy_init )
 		{
@@ -730,210 +729,210 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 40 "scanner.l"
-{ return yylval_token (TOK_INT); }
+#line 41 "scanner.l"
+{ return yylval_token (TOK_VOID); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 41 "scanner.l"
-{ return yylval_token (TOK_IDENT); }
+#line 42 "scanner.l"
+{ return yylval_token (TOK_BOOL); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 42 "scanner.l"
-{ return yylval_token (TOK_NEWARRAY); }
+#line 43 "scanner.l"
+{ return yylval_token (TOK_CHAR); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 43 "scanner.l"
-{ return yylval_token (TOK_EQ); }
+#line 44 "scanner.l"
+{ return yylval_token (TOK_INT); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 44 "scanner.l"
-{ return yylval_token (TOK_NE); }
+#line 45 "scanner.l"
+{ return yylval_token (TOK_STRING); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 45 "scanner.l"
-{ return yylval_token (TOK_LE); }
+#line 46 "scanner.l"
+{ return yylval_token (TOK_STRUCT); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 46 "scanner.l"
-{ return yylval_token (TOK_GE); }
+#line 47 "scanner.l"
+{ return yylval_token (TOK_IF); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 49 "scanner.l"
-{ return yylval_token ('='); }
+#line 48 "scanner.l"
+{ return yylval_token (TOK_ELSE); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 50 "scanner.l"
-{ return yylval_token ('+'); }
+#line 49 "scanner.l"
+{ return yylval_token (TOK_WHILE); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 51 "scanner.l"
-{ return yylval_token ('-'); }
+#line 50 "scanner.l"
+{ return yylval_token (TOK_RETURN); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 52 "scanner.l"
-{ return yylval_token ('*'); }
+#line 51 "scanner.l"
+{ return yylval_token (TOK_FALSE); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 53 "scanner.l"
-{ return yylval_token ('/'); }
+#line 52 "scanner.l"
+{ return yylval_token (TOK_TRUE); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 54 "scanner.l"
-{ return yylval_token ('^'); }
+#line 53 "scanner.l"
+{ return yylval_token (TOK_NULL); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 55 "scanner.l"
-{ return yylval_token ('('); }
+#line 54 "scanner.l"
+{ return yylval_token (TOK_NEW); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 56 "scanner.l"
-{ return yylval_token (')'); }
+#line 55 "scanner.l"
+{ return yylval_token ('='); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 57 "scanner.l"
-{ return yylval_token (';'); }
+#line 56 "scanner.l"
+{ return yylval_token ('+'); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 58 "scanner.l"
-{ return yylval_token ('['); }
+#line 57 "scanner.l"
+{ return yylval_token ('-'); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 59 "scanner.l"
-{ return yylval_token (']'); }
+#line 58 "scanner.l"
+{ return yylval_token ('*'); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 60 "scanner.l"
-{ return yylval_token (','); }
+#line 59 "scanner.l"
+{ return yylval_token ('/'); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 61 "scanner.l"
-{ return yylval_token ('.'); }
+#line 60 "scanner.l"
+{ return yylval_token ('^'); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 62 "scanner.l"
-{ return yylval_token ('!'); }
+#line 61 "scanner.l"
+{ return yylval_token ('('); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 63 "scanner.l"
-{ return yylval_token ('{'); }
+#line 62 "scanner.l"
+{ return yylval_token (')'); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 64 "scanner.l"
-{ return yylval_token ('}'); }
+#line 63 "scanner.l"
+{ return yylval_token (';'); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 65 "scanner.l"
-{ return yylval_token (TOK_LT); }
+#line 64 "scanner.l"
+{ return yylval_token ('['); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 66 "scanner.l"
-{ return yylval_token (TOK_GT); }
+#line 65 "scanner.l"
+{ return yylval_token (']'); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 67 "scanner.l"
-{ return yylval_token (TOK_VOID); }
+#line 66 "scanner.l"
+{ return yylval_token (','); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 68 "scanner.l"
-{ return yylval_token (TOK_BOOL); }
+#line 67 "scanner.l"
+{ return yylval_token ('.'); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 69 "scanner.l"
-{ return yylval_token (TOK_CHAR); }
+#line 68 "scanner.l"
+{ return yylval_token ('!'); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 70 "scanner.l"
-{ return yylval_token (TOK_INT); }
+#line 69 "scanner.l"
+{ return yylval_token ('{'); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 71 "scanner.l"
-{ return yylval_token (TOK_STRING); }
+#line 70 "scanner.l"
+{ return yylval_token ('}'); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 72 "scanner.l"
-{ return yylval_token (TOK_STRUCT); }
+#line 71 "scanner.l"
+{ return yylval_token (TOK_LT); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 73 "scanner.l"
-{ return yylval_token (TOK_IF); }
+#line 72 "scanner.l"
+{ return yylval_token (TOK_GT); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 74 "scanner.l"
-{ return yylval_token (TOK_ELSE); }
+#line 73 "scanner.l"
+{ return yylval_token (TOK_INT); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 75 "scanner.l"
-{ return yylval_token (TOK_WHILE); }
+#line 74 "scanner.l"
+{ return yylval_token (TOK_NEWARRAY); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 76 "scanner.l"
-{ return yylval_token (TOK_RETURN); }
+#line 75 "scanner.l"
+{ return yylval_token (TOK_EQ); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 77 "scanner.l"
-{ return yylval_token (TOK_FALSE); }
+#line 76 "scanner.l"
+{ return yylval_token (TOK_NE); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 78 "scanner.l"
-{ return yylval_token (TOK_TRUE); }
+#line 77 "scanner.l"
+{ return yylval_token (TOK_LE); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 79 "scanner.l"
-{ return yylval_token (TOK_NULL); }
+#line 78 "scanner.l"
+{ return yylval_token (TOK_GE); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 80 "scanner.l"
-{ return yylval_token (TOK_NEW); }
+#line 79 "scanner.l"
+{ return yylval_token (TOK_IDENT); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 84 "scanner.l"
+#line 83 "scanner.l"
 { scanner_badchar (*yytext); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 86 "scanner.l"
+#line 85 "scanner.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 937 "yylex.c"
+#line 936 "yylex.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1815,7 +1814,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 86 "scanner.l"
+#line 85 "scanner.l"
 
 
 // unset: %option noyywrap

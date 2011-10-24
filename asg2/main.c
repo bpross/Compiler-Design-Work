@@ -1,4 +1,5 @@
-
+#include <libgen.h>
+#include <wait.h>
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>
@@ -9,6 +10,8 @@
 #include "astree.h"
 #include "lyutils.h"
 #include "auxlib.h"
+#include "stringtable.h"
+#include "strhash.h"
 
 #define CPP "/usr/bin/cpp"
 
@@ -16,6 +19,42 @@ struct options{
    bool dumptree;
    bool echoinput;
 };
+// Chomp the last character from a buffer if it is delim.
+void chomp (char *string, char delim) {
+   size_t len = strlen (string);
+   if (len == 0) return;
+   char *nlpos = string + len - 1;
+   if (*nlpos == delim) *nlpos = '\0';
+}
+
+// checks to see if the file has a valid extension
+// removes the extension if it is valid
+void remove_file_ext(char *filename) {
+  int dot = 3;
+  int o = 2;
+  int c = 1;
+  size_t len = strlen(filename);
+  if (len == 0) return;
+  char *check = filename + len - dot;
+  if (*check == '.') {
+    check = filename + len - o;
+    if(*check == 'o') {
+      check = filename + len - c;
+      if(*check == 'c') {
+        chomp(filename,'c');
+        chomp(filename,'o');
+        chomp(filename,'.');
+      }
+      else {
+        fprintf(stderr, "Wrong File Extension\n");
+      }
+    }
+    else {
+      fprintf(stderr, "Wrong File Extension\n");
+    }
+  }
+}
+
 
 // Open a pipe from the C preprocessor.
 // Exit failure if can't.
@@ -32,7 +71,25 @@ void yyin_cpp_popen (char *filename) {
       syserrprintf (yyin_cpp_command);
       exit (get_exitstatus());
    }
+   char *base = basename(filename);
+   remove_file_ext(base);
+
+   int token;
+   char toke[1024];
+   stringtable_ref st = new_stringtable();
+   stringnode_ref sn;
+   for (token = yylex(); token != 0; token=yylex()){
+      printf("token %d: type %s, name %s\n",token, get_yytname(token), yytext);
+      strcpy(toke,get_yytname(token));
+      sn = intern_stringtable(st, toke);
+   }
+   strcat(base,".str");
+   FILE *fp = fopen(base,"w");
+   debugdump_stringtable(st,fp);
+   fclose(fp);
+
 }
+
 
 void yyin_cpp_pclose (void) {
    int pclose_rc = pclose (yyin);
@@ -72,10 +129,6 @@ int main (int argc, char **argv) {
    set_execname (argv[0]);
    scan_opts (argc, argv, &options);
    scanner_setecho (options.echoinput);
-   int token;
-   for (token = yylex(); token != 0; token=yylex()){
-      printf("token %d: type %s, name %s\n",token, get_yytname(token), yytext);
-   }
    //parsecode = yyparse();
    if (parsecode) {
       errprintf ("%:parse failed (%d)\n", parsecode);
