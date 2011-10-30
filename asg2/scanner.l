@@ -19,35 +19,70 @@
 %option perf-report
 %option verbose
 
+
 LETTER          [A-Za-z_]
+CHAR_CONST	(’([^\\’\n]|\\[\\’"0nt])’)
+STR_CONST	(\"([^\\"\n]|\\[\\’"0nt])*\")
 DIGIT           [0-9]
-MANTISSA        ({DIGIT}+\.?{DIGIT}*|\.{DIGIT}+)
-EXPONENT        ([Ee][+-]?{DIGIT}+)
-NUMBER          ({MANTISSA}{EXPONENT}?)
-NOTNUMBER       ({MANTISSA}[Ee][+-]?)
-IDENT           ({LETTER}({LETTER}|{DIGIT})*)
+TOK_INT         ({DIGIT}+)
+TOK_IDENT       ({LETTER}({LETTER}|{DIGIT})*)
+TOK_NEWARRAY    \[\]
+TOK_EQ          ==
+TOK_NE          !=
+TOK_LE          <=
+TOK_GE          >=
+
 
 %%
 
 "#".*           { scanner_include(); }
 [ \t]+          { IGNORE (white space) }
-\n              { scanner_newline(); }
+[ \n]+             { scanner_newline(); }
 
-{NUMBER}        { return yylval_token (NUMBER); }
-{IDENT}         { return yylval_token (IDENT); }
 
-"="             { return yylval_token ('='); }
-"+"             { return yylval_token ('+'); }
-"-"             { return yylval_token ('-'); }
-"*"             { return yylval_token ('*'); }
-"/"             { return yylval_token ('/'); }
-"^"             { return yylval_token ('^'); }
-"("             { return yylval_token ('('); }
-")"             { return yylval_token (')'); }
-";"             { return yylval_token (';'); }
+"void"          { return yyprint_token (TOK_VOID); }
+"bool"          { return yyprint_token (TOK_BOOL); }
+"char"          { return yyprint_token (TOK_CHAR); }
+"int"           { return yyprint_token (TOK_INT); }
+"string"        { return yyprint_token (TOK_STRING); }
+"struct"        { return yyprint_token (TOK_STRUCT); }
+"if"            { return yyprint_token (TOK_IF); }
+"else"          { return yyprint_token (TOK_ELSE); }
+"while"         { return yyprint_token (TOK_WHILE); }
+"return"        { return yyprint_token (TOK_RETURN); }
+"false"         { return yyprint_token (TOK_FALSE); }
+"true"          { return yyprint_token (TOK_TRUE); }
+"null"          { return yyprint_token (TOK_NULL); }
+"new"           { return yyprint_token (TOK_NEW); }
+"="             { return yyprint_token ('='); }
+"+"             { return yyprint_token ('+'); }
+"-"             { return yyprint_token ('-'); }
+"*"             { return yyprint_token ('*'); }
+"/"             { return yyprint_token ('/'); }
+"^"             { return yyprint_token ('^'); }
+"("             { return yyprint_token ('('); }
+")"             { return yyprint_token (')'); }
+";"             { return yyprint_token (';'); }
+"["             { return yyprint_token ('['); }
+"]"             { return yyprint_token (']'); }
+","             { return yyprint_token (','); }
+"."             { return yyprint_token ('.'); }
+"!"             { return yyprint_token ('!'); }
+"{"             { return yyprint_token ('{'); }
+"}"             { return yyprint_token ('}'); }
+"<"             { return yyprint_token (TOK_LT); }
+">"             { return yyprint_token (TOK_GT); }
+{TOK_INT}       { return yyprint_token (TOK_INTCON); }
+{CHAR_CONST}	{ return yyprint_token (TOK_CHARCON); }
+{STR_CONST}	{ return yyprint_token (TOK_STRINGCON); }
+{TOK_NEWARRAY}  { return yyprint_token (TOK_NEWARRAY); }
+{TOK_EQ}  { return yyprint_token (TOK_EQ); }
+{TOK_NE}  { return yyprint_token (TOK_NE); }
+{TOK_LE}  { return yyprint_token (TOK_LE); }
+{TOK_GE}  { return yyprint_token (TOK_GE); }
+{TOK_IDENT}     { return yyprint_token (TOK_IDENT); }
 
-{NOTNUMBER}     { scanner_badtoken (yytext);
-                  return yylval_token (NUMBER); }
+
 
 .               { scanner_badchar (*yytext); }
 
@@ -59,4 +94,5 @@ int yywrap (void){
    if (yy_flex_debug) eprintf ("yywrap() return %d\n", TRUE);
    return TRUE;
 }
+
 

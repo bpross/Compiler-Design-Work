@@ -5,7 +5,7 @@ DEPSFILE    = ${MKFILE}.deps
 NOINCL      = ci clean spotless
 NEEDINCL    = ${filter ${NOINCL}, ${MAKECMDGOALS}}
 GMAKE       = ${MAKE} --no-print-directory
-UNAME      ?= ${shell uname -s}
+UNAME       = ${shell uname -s}
 
 ifeq (${UNAME},SunOS)
 COMPILE  = CC -g -features=extensions
@@ -16,18 +16,27 @@ COMPILE  = gcc -g -O0 -Wall -Wextra -Werror
 MAKEDEPS = gcc -MM
 endif
 
-SOURCE      = stringtable.c strhash.c main.c
-HEADER      = stringtable.h strhash.h
+SOURCE      = stringtable.c strhash.c main.c astree.c lyutils.c auxlib.c 
+HEADER      = stringtable.h strhash.h astree.h astree.rep.h lyutils.h auxlib.h 
+LSOURCES    = scanner.l
+YSOURCES    = parser.y
+CLGEN       = yylex.c
+HYGEN       = yyparse.h
+CYGEN       = yyparse.c
+CGENS       = ${CLGEN} ${CYGEN}
+ALLGENS     = ${HYGEN} ${CGENS}
+LREPORT     = yylex.output
+YREPORT     = yyparse.output
 EXECBIN     = oc
-OBJECTS     = ${SOURCE:.c=.o}
+OBJECTS     = ${SOURCE:.c=.o} ${CYGEN:.c=.o} ${CLGEN:.c=.o}
 OTHERS      = ${MKFILE} README PARTNER
-ALLSOURCES  = ${HEADER} ${SOURCE} ${OTHERS}
+ALLSOURCES  = ${HEADER} ${SOURCE} ${OTHERS} ${ALLGENS}
 CLASS       = cmps104a-wm.f11
-PROJECT     = asg1
-LINTOPT  = -D__EXTENSIONS__ -Xa -fd -m -u -x -errchk=%all,no%longptr64
+PROJECT     = asg2
+LINTOPT     = -D__EXTENSIONS__ -Xa -fd -m -u -x -errchk=%all,no%longptr64
 
 all : ${EXECBIN}
-	- checksource ${ALLSOURCES}
+	checksource ${ALLSOURCES}
 
 lint : ${SOURCES}
 	for cprog in ${SOURCES} \
@@ -41,12 +50,21 @@ ${EXECBIN} : ${OBJECTS}
 %.o : %.c
 	${COMPILE} -c $<
 
+${CLGEN} : ${LSOURCES}
+	flex -o${CLGEN} ${LSOURCES} 2>${LREPORT}
+	- grep -v '^  ' ${LREPORT}
+	- (perl -e 'print "="x65,"\n"'; cat lex.backup) >>${LREPORT} 
+	- rm lex.backup
+
+${CYGEN} ${HYGEN} : ${YSOURCES}
+	bison -dtv -o${CYGEN} ${YSOURCES}
+
 ci : ${ALLSOURCES}
-	- checksource ${ALLSOURCES}
-	git commit ${ALLSOURCES}
+	checksource ${ALLSOURCES}
+	- git commit ${ALLSOURCES}
 
 clean :
-	- rm ${OBJECTS} ${DEPSFILE} core ${EXECBIN}.errs
+	rm ${OBJECTS} ${DEPSFILE} core ${EXECBIN}.errs
 
 spotless : clean
 	- rm ${EXECBIN} 
@@ -56,18 +74,4 @@ submit : ${ALLSOURCES}
 	submit ${CLASS} ${PROJECT} ${ALLSOURCES}
 	testsubmit ${CLASS} ${PROJECT} ${ALLSOURCES}
 
-deps : ${SOURCE} ${HEADER}
-	@ echo "# ${DEPSFILE} created `LC_TIME=C date`" >${DEPSFILE}
-	${MAKEDEPS} ${SOURCE} | sort | uniq >>${DEPSFILE}
-
-${DEPSFILE} :
-	@ touch ${DEPSFILE}
-	${GMAKE} deps
-
-again :
-	gmake --no-print-directory spotless deps ci all lis
-
-ifeq (${NEEDINCL}, )
-include ${DEPSFILE}
-endif
 
