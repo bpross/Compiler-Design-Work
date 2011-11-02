@@ -193,6 +193,9 @@ int main (int argc, char **argv) {
          syswarn (command);
       }else {
          cpplines (pipe, filename);
+         char buffer[100];
+         fgets(buffer,20,pipe);
+         printf("This is a test, first line: %s\n",buffer);
          int pclose_rc = pclose (pipe);
          eprint_status (command, pclose_rc);
       }
