@@ -1,5 +1,7 @@
-// $Id: prthexaddr.c,v 1.1 2011-08-31 19:29:39-07 - - $
-
+// Authors: bpross@ucsc.edu, esteggal@ucsc.edu
+// TA: Richard Halpert
+// Professor: Wesley Mackey
+// CMPS 104a
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>

@@ -1,3 +1,7 @@
+// Authors: bpross@ucsc.edu, esteggal@ucsc.edu
+// TA: Richard Halpert
+// Professor: Wesley Mackey
+// CMPS 104a
 #include <assert.h>
 #include <stdio.h>
 #include "strhash.h"

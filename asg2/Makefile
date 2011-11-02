@@ -1,4 +1,7 @@
-# $Id: Makefile,v 1.4 2010-12-13 20:12:44-08 - - $
+# Authors: bpross@ucsc.edu, esteggal@ucsc.edu
+# TA: Richard Halpert
+# Professor: Wesley Mackey
+# CMPS 104a
 
 MKFILE      = Makefile
 DEPSFILE    = ${MKFILE}.deps

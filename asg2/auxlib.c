@@ -1,4 +1,7 @@
-
+// Authors: bpross@ucsc.edu, esteggal@ucsc.edu
+// TA: Richard Halpert
+// Professor: Wesley Mackey
+// CMPS 104a
 #define _GNU_SOURCE
 #define __USE_GNU
 

@@ -1,3 +1,7 @@
+// Authors: bpross@ucsc.edu, esteggal@ucsc.edu
+// TA: Richard Halpert
+// Professor: Wesley Mackey
+// CMPS 104a
 %{
 
 #include <stdlib.h>
@@ -37,7 +41,7 @@ TOK_GE          >=
 
 "#".*           { scanner_include(); }
 [ \t]+          { IGNORE (white space) }
-[ \n]+             { scanner_newline(); }
+[ \n]?           { scanner_newline(); }
 
 
 "void"          { return yyprint_token (TOK_VOID); }

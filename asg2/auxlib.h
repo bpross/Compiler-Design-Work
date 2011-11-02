@@ -1,3 +1,7 @@
+// Authors: bpross@ucsc.edu, esteggal@ucsc.edu
+// TA: Richard Halpert
+// Professor: Wesley Mackey
+// CMPS 104a
 #ifndef __AUXLIB_H__
 #define __AUXLIB_H__
 

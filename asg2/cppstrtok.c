@@ -1,4 +1,7 @@
-// $Id: cppstrtok.c,v 1.7 2011-09-28 13:51:18-07 - - $
+// Authors: bpross@ucsc.edu, esteggal@ucsc.edu
+// TA: Richard Halpert
+// Professor: Wesley Mackey
+// CMPS 104a
 
 // Use cpp to scan a file and print line numbers.
 // Print out each input line read in, then strtok it for

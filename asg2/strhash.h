@@ -1,4 +1,7 @@
-
+// Authors: bpross@ucsc.edu, esteggal@ucsc.edu
+// TA: Richard Halpert
+// Professor: Wesley Mackey
+// CMPS 104a
 //
 // NAME
 //    strhash - return an unsigned 32-bit hash code for a string

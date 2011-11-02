@@ -1,3 +1,7 @@
+// Authors: bpross@ucsc.edu, esteggal@ucsc.edu
+// TA: Richard Halpert
+// Professor: Wesley Mackey
+// CMPS 104a
 #ifndef __STRTABLE_H__
 #define __STRINGTABLE_H__
 
