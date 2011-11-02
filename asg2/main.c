@@ -85,12 +85,10 @@ void yyin_cpp_popen (char *filename) {
       exit (get_exitstatus());
    }
       int token;
-   char toke[1024];
    stringtable_ref st = new_stringtable();
    stringnode_ref sn;
    for (token = yylex(); token != 0; token=yylex()){
-      strcpy(toke,get_yytname(token));
-      sn = intern_stringtable(st, toke);
+      sn = intern_stringtable(st, yytext);
    }
    strcat(base,".str");
    FILE *fp = fopen(base,"w");
