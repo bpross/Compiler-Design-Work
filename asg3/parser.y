@@ -38,15 +38,17 @@ static void *yycalloc (size_t size);
 %left     '+' '-'
 %left     '*' '/' '%'
 %right    '^'
-%right    TOK_POS "u+" TOK_NEG "u-"
+%right    TOK_POS TOK_NEG '!'
 
 %start start
 
 
 %%
 
+/* Should be good */
 start       : program        { yyparse_astree = $1; }
             ;
+/* Should be good */
 program     : program structdef { $$ = adopt1 ($1, $2); } 
             | program function { $$ = adopt1 ($1, $2); } 
             | program statement { $$ = adopt1 ($1, $2); } 
@@ -54,29 +56,31 @@ program     : program structdef { $$ = adopt1 ($1, $2); }
             | program error ';' { $$ = adopt1 ($$, $1); } 
             |                   { $$ = new_parseroot (); } 
             ;
-structdef   : structdef struct TOK_TYPEID '{' { adopt2 ($2, $1, $3); }
-            | structdef indentdecl';' 
-            | structdef '}' { adopt1($1, $2); }
+/* Should be good */
+structdef   : struct TOK_TYPEID identdecls '}' { $$ = adopt1 ($1, $2); }
             ;
-identdecl   : identdecl basetype '[]' TOK_IDENT {adopt2($2, $1, $3); }
-            | identdecl basetype TOK_IDENT {adopt1($1, $2); }
+identdecls  : '{' identdecl ';'  { $$ = adopt1($1, $2);  }
+            | identdecls identdecl ';' { $$ = adopt1($1, $2) ; }
             ;
-basetype    : basetype 'void'
-            | basetype 'bool'
-            | basetype 'char'
-            | basetype 'int'
-            | basetype 'string'
-            | basetype TOK_TYPEID
+/* Should be good */
+identdecl   : basetype '[]' TOK_IDENT {adopt2($1, $2, $3); }
+            | basetype TOK_IDENT {adopt1($1, $2); }
             ;
-function    : function identdecl '(' TOK_PARAMLIST 
-            | function block
+
+basetype    : 'void' { $$ = $1; }
+            | 'bool' { $$ = $1; }
+            | 'char' { $$ = $1; }
+            | 'int'  { $$ = $1; }
+            | 'string'  { $$ = $1; }
+            | TOK_TYPEID { $$ = $1; }
+            ;
+
+function    : identdecl '(' 
+            | identdecl ')' block
+            | function ',' identdecl       { adopt2
+            | block                        { $$ = $1 ; }
             | TOK_PROTOTYPE identdecl';'
             | TOK_FUNCTION identdecl'{'
-            ;
-paramlist   : paramlist '(' identdecl
-            | paramlist ',' identdecl
-            | paramlist '(' identdecl
-            | paramlist ')' identdecl
             ;
 block       : block '{' statement 
             | block statement
@@ -84,55 +88,63 @@ block       : block '{' statement
             | '{' '}'
             | ';'
             ;
-statement   : statement block
-            | statement vardeclinit
-            | statement while 
-            | statement elseif 
-            | statement return
-            | statement expr ';'
+statement   : block         { $$ = $1; }
+            | vardeclinit    { $$ = $1; }
+            | while          { $$ = $1; } 
+            | elseif        { $$ = $1; }
+            | return        { $$ = $1; }
+            | expr ';'      { $$ = $1; }
             ;
-vardeclinit : identdecl '=' expr ';'
+vardeclinit : identdecl '=' expr ';' { adopt2($2, $1, $3) ; }
             ;
 
-while       : while 'while' '(' expr ')' stmt
+while       : 'while' '(' expr ')' stmt { adopt2($4, $1, $5) ;}
             ;
 
 ifelse      : ifelse 'if' '(' expr ')' stmt
             | ifelse 'if' '(' expr ')' stmt 'else' stmt
             ;
 
-return      : 'return' ';'
-            | 'return' expr ';'
+return      : 'return' ';'        { adopt1($1, TOK_RETURNVOID) ; }
+            | 'return' expr ';'   { adopt1($1, $2) ; }
             ;
 
-expr        : expr BINOP expr
-            | UNOP expr
-            | allocator
-            | call
-            | variable
-            | constant
-            | '(' expr ')'
+expr        : expr '+' expr { adopt1sym($1, $2, $3); }
+            | '+' expr %prec TOK_POS { adopt1sym($1, $2, TOK_POS); }
+            | expr '-' expr { adopt1sym($1, $2, $3); }
+            | '-' expr %prec TOK_NEG { adopt1sym($1, $2, TOK_NEG); }
+            | allocator              { $$ = $1 ; }
+            | call                   { $$ = $1 ; }
+            | variable               { $$ = $1 ; }
+            | constant               { $$ = $1 ; }
+            | '(' expr ')'           { $$ = $2 ' }
             ;
               
-allocator   : 'new' TOK_TYPEID '('')'
-            | 'new string' '(' expr ')'
+allocator   : 'new' TOK_TYPEID '('')' { adopt1(TOK_NEW, $2) ;}
+            | 'new' string '(' expr ')' { adopt1(TOK_NEWSTRING, $4) ; }
             | 'new' basetype '[' expr ']'
             ;
 
-call        : call TOK_IDENT '(' 
-            | call expr
+call        : TOK_IDENT expr '(' { adopt1sym($2, $1, TOK_CALL) ; }
+            | TOK_IDENT '(' ')'  { adopt1sym($2, $1, TOK_CALL) ; }
             | call ',' expr
-            | ')'
+            | expr
+            ;
+
+args
+
 variable    : TOK_IDENT
             | expr '[' expr ']' 
             | expr '.' 
             | TOK_FIELD
-constant    : TOK_INTCON
-            | TOK_CHARCON
-            | TOK_STRING
-            | 'false'
-            | 'true'
-            | 'null'
+            ;
+
+constant    : TOK_INTCON      { $$ = $1 ; }
+            | TOK_CHARCON     { $$ = $1 ; }
+            | TOK_STRING      { $$ = $1 ; }
+            | 'false'         { $$ = $1 ; }
+            | 'true'          { $$ = $1 ; }
+            | 'null'          { $$ = $1 ; }
             ;
 /*
 token   : '(' | ')' | '[' | ']' | '{' | '}' | ';' | ',' | '.'
