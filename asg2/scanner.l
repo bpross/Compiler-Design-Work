@@ -1,8 +1,8 @@
+%{
 // Authors: bpross@ucsc.edu, esteggal@ucsc.edu
 // TA: Richard Halpert
 // Professor: Wesley Mackey
 // CMPS 104a
-%{
 
 #include <stdlib.h>
 
@@ -25,23 +25,25 @@
 
 
 LETTER          [A-Za-z_]
-CHAR_CONST	(’([^\\’\n]|\\[\\’"0nt])’)
-STR_CONST	(\"([^\\"\n]|\\[\\’"0nt])*\")
+CHAR_CONST      ('([^\\'\n]|\\[\\'"0nt])')
+BAD_CHAR        ('([^\\'\n]|\\[\\'"0nt]|\\[^\\'"0nt])?[']?[\n]?)
+STR_CONST       (\"([^\\"\n]|\\[\\'"0nt])*\")
+BAD_STR         (\"([^\\"\n]|\\[^\\'"0nt])*[\"]?[\n]?)
 DIGIT           [0-9]
 TOK_INT         ({DIGIT}+)
 TOK_IDENT       ({LETTER}({LETTER}|{DIGIT})*)
+BAD_IDENT       ({DIGIT}({LETTER}|{DIGIT})*)
 TOK_NEWARRAY    \[\]
 TOK_EQ          ==
 TOK_NE          !=
 TOK_LE          <=
 TOK_GE          >=
 
-
 %%
 
 "#".*           { scanner_include(); }
-[ \t]+          { IGNORE (white space) }
-[ \n]?           { scanner_newline(); }
+[ \t]+          { IGNORE (white space); }
+\n              { scanner_newline(); }
 
 
 "void"          { return yyprint_token (TOK_VOID); }
@@ -77,15 +79,17 @@ TOK_GE          >=
 "<"             { return yyprint_token (TOK_LT); }
 ">"             { return yyprint_token (TOK_GT); }
 {TOK_INT}       { return yyprint_token (TOK_INTCON); }
-{CHAR_CONST}	{ return yyprint_token (TOK_CHARCON); }
-{STR_CONST}	{ return yyprint_token (TOK_STRINGCON); }
+{CHAR_CONST}    { return yyprint_token (TOK_CHARCON); }
+{STR_CONST}     { return yyprint_token (TOK_STRINGCON); }
 {TOK_NEWARRAY}  { return yyprint_token (TOK_NEWARRAY); }
-{TOK_EQ}  { return yyprint_token (TOK_EQ); }
-{TOK_NE}  { return yyprint_token (TOK_NE); }
-{TOK_LE}  { return yyprint_token (TOK_LE); }
-{TOK_GE}  { return yyprint_token (TOK_GE); }
+{TOK_EQ}        { return yyprint_token (TOK_EQ); }
+{TOK_NE}        { return yyprint_token (TOK_NE); }
+{TOK_LE}        { return yyprint_token (TOK_LE); }
+{TOK_GE}        { return yyprint_token (TOK_GE); }
 {TOK_IDENT}     { return yyprint_token (TOK_IDENT); }
-
+{BAD_CHAR}      { scanner_badchar(*yytext); }
+{BAD_STR}       { scanner_badchar(*yytext); }
+{BAD_IDENT}     { scanner_badchar(*yytext); }
 
 
 .               { scanner_badchar (*yytext); }

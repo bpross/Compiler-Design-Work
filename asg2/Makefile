@@ -4,7 +4,6 @@
 # CMPS 104a
 
 MKFILE      = Makefile
-DEPSFILE    = ${MKFILE}.deps
 NOINCL      = ci clean spotless
 NEEDINCL    = ${filter ${NOINCL}, ${MAKECMDGOALS}}
 GMAKE       = ${MAKE} --no-print-directory
@@ -19,10 +18,13 @@ COMPILE  = gcc -g -O0 -Wall -Wextra -Werror
 MAKEDEPS = gcc -MM
 endif
 
-SOURCE      = stringtable.c strhash.c main.c astree.c lyutils.c auxlib.c 
-HEADER      = stringtable.h strhash.h astree.h astree.rep.h lyutils.h auxlib.h 
+SOURCE      = stringtable.c strhash.c main.c lyutils.c ${MSOURCE}
+MSOURCE     = astree.c auxlib.c
+HEADER      = stringtable.h strhash.h lyutils.h ${MHEADER}
+MHEADER     = astree.h astree.rep.h auxlib.h
 LSOURCES    = scanner.l
 YSOURCES    = parser.y
+YY          = ${LSOURCES} ${YSOURCES}
 CLGEN       = yylex.c
 HYGEN       = yyparse.h
 CYGEN       = yyparse.c
@@ -32,11 +34,11 @@ LREPORT     = yylex.output
 YREPORT     = yyparse.output
 EXECBIN     = oc
 OBJECTS     = ${SOURCE:.c=.o} ${CYGEN:.c=.o} ${CLGEN:.c=.o}
-OTHERS      = ${MKFILE} README PARTNER
-ALLSOURCES  = ${HEADER} ${SOURCE} ${OTHERS} ${ALLGENS}
+MOBJECT     = ${MSOURCE:.c=.o}
+OTHERS      = ${MKFILE} README PARTNER ${MSOURCE} ${MHEADER}
+ALLSOURCES  = ${HEADER} ${SOURCE} ${OTHERS} ${ALLGENS} ${YY}
 CLASS       = cmps104a-wm.f11
 PROJECT     = asg2
-LINTOPT     = -D__EXTENSIONS__ -Xa -fd -m -u -x -errchk=%all,no%longptr64
 
 all : ${EXECBIN}
 	checksource ${ALLSOURCES}
@@ -67,7 +69,7 @@ ci : ${ALLSOURCES}
 	- git commit ${ALLSOURCES}
 
 clean :
-	rm ${OBJECTS} ${DEPSFILE} core ${EXECBIN}.errs
+	rm ${OBJECTS}
 
 spotless : clean
 	- rm ${EXECBIN} 
