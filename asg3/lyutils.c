@@ -81,7 +81,8 @@ void scanner_badchar (unsigned char bad) {
               filename_stack.filenames[filename_stack.last_filenr],
               scan_linenr, char_rep);
    fprintf(yytok,"    %d  %3d.%.3d  %3d  %13s  (%s)\n",
-           filename_stack.last_filenr, scan_linenr, yyleng, -1, "BAD TOKEN", char_rep);
+           filename_stack.last_filenr, scan_linenr, yyleng, -1, 
+           "BAD TOKEN", char_rep);
 }
 
 void scanner_badtoken (char *lexeme) {

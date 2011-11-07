@@ -45,55 +45,55 @@ static void *yycalloc (size_t size);
 
 %%
 
-/* Should be good */
-start       : program        { yyparse_astree = $1; }
+start       : program             { yyparse_astree = $1; }
             ;
-/* Should be good */
-program     : program structdef { $$ = adopt1 ($1, $2); } 
-            | program function { $$ = adopt1 ($1, $2); } 
-            | program statement { $$ = adopt1 ($1, $2); } 
-            | program error '}' { $$ = adopt1 ($$, $1); } 
-            | program error ';' { $$ = adopt1 ($$, $1); } 
-            |                   { $$ = new_parseroot (); } 
-            ;
-/* Should be good */
-structdef   : struct TOK_TYPEID identdecls '}' { $$ = adopt1 ($1, $2); }
-            ;
-identdecls  : '{' identdecl ';'  { $$ = adopt1($1, $2);  }
-            | identdecls identdecl ';' { $$ = adopt1($1, $2) ; }
-            ;
-/* Should be good */
-identdecl   : basetype '[]' TOK_IDENT {adopt2($1, $2, $3); }
-            | basetype TOK_IDENT {adopt1($1, $2); }
+program     : program structdef   { $$ = adopt1 ($1, $2); } 
+            | program function    { $$ = adopt1 ($1, $2); } 
+            | program statement   { $$ = adopt1 ($1, $2); } 
+            | program error '}'   { $$ = adopt1 ($$, $1); } 
+            | program error ';'   { $$ = adopt1 ($$, $1); } 
+            |                     { $$ = new_parseroot (); } 
             ;
 
-basetype    : 'void' { $$ = $1; }
-            | 'bool' { $$ = $1; }
-            | 'char' { $$ = $1; }
-            | 'int'  { $$ = $1; }
-            | 'string'  { $$ = $1; }
+structdef   : struct TOK_TYPEID identdecls '}' { $$ = adopt1 ($1, $2); }
+            ;
+
+identdecls  : '{' identdecl ';'        { $$ = adopt1($1, $2);  }
+            | identdecls identdecl ';' { $$ = adopt1($1, $2) ; }
+            ;
+
+identdecl   : basetype '[]' TOK_IDENT {adopt2($1, $2, $3); }
+            | basetype TOK_IDENT      {adopt1($1, $2); }
+            ;
+
+basetype    : 'void'     { $$ = $1; }
+            | 'bool'     { $$ = $1; }
+            | 'char'     { $$ = $1; }
+            | 'int'      { $$ = $1; }
+            | 'string'   { $$ = $1; }
             | TOK_TYPEID { $$ = $1; }
             ;
 
-function    : identdecl '(' 
+function    : TOK_FUNCTION identdecl '(' 
             | identdecl ')' block
             | function ',' identdecl       { adopt2
             | block                        { $$ = $1 ; }
             | TOK_PROTOTYPE identdecl';'
-            | TOK_FUNCTION identdecl'{'
             ;
-block       : block '{' statement 
-            | block statement
-            | '}'
-            | '{' '}'
-            | ';'
+
+block       : block '{' statement {$$ = adopt2($1,$2,$3); }
+            | block statement     {$$ = adopt1($1,$2); }
+            | block '}'           {$$ = adopt1($1,$2); }
+            | block '{' '}'       {$$ = adopt2($1,$2,$3); }
+            | block ';'           {$$ = adopt1($1,$2); }
             ;
-statement   : block         { $$ = $1; }
-            | vardeclinit    { $$ = $1; }
-            | while          { $$ = $1; } 
-            | elseif        { $$ = $1; }
-            | return        { $$ = $1; }
-            | expr ';'      { $$ = $1; }
+
+statement   : block               { $$ = $1; }
+            | vardeclinit         { $$ = $1; }
+            | while               { $$ = $1; } 
+            | elseif              { $$ = $1; }
+            | return              { $$ = $1; }
+            | expr ';'            { $$ = $1; }
             ;
 vardeclinit : identdecl '=' expr ';' { adopt2($2, $1, $3) ; }
             ;
