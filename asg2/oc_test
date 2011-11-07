@@ -1,0 +1,16 @@
+for file in ../testfiles/*
+do
+    echo $file
+    ./oc $file
+    echo "$file exit code: $?"
+done
+if [ ! -d "tok_files" ]; then
+    mkdir tok_files
+fi
+
+if [ ! -d "str_files" ]; then
+    mkdir str_files
+fi
+
+mv *.tok ./tok_files/
+mv *.str ./str_files/
