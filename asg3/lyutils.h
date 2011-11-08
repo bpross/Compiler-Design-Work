@@ -37,6 +37,8 @@ void scanner_setecho (bool echoflag);
 void scanner_useraction (void);
 
 astree new_parseroot (void);
+astree new_function(void);
+astree new_prototype(void);
 int yylval_token (int symbol);
 int yyprint_token(int symbol);
 void scanner_include (void);

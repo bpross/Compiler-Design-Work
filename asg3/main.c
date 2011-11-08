@@ -84,23 +84,24 @@ void yyin_cpp_popen (char *filename) {
       syserrprintf (yyin_cpp_command);
       exit (get_exitstatus());
    }
-      int token;
-   stringtable_ref st = new_stringtable();
-   stringnode_ref sn;
-   for (token = yylex(); token != 0; token=yylex()){
-      sn = intern_stringtable(st, yytext);
-   }
-   strcat(base,".str");
-   FILE *fp = fopen(base,"w");
-   debugdump_stringtable(st,fp);
-   fclose(fp);
-   fclose(yytok);
+   //   int token;
+   //stringtable_ref st = new_stringtable();
+   //stringnode_ref sn;
+   //for (token = yylex(); token != 0; token=yylex()){
+   //   sn = intern_stringtable(st, yytext);
+   //}
+   //strcat(base,".str");
+   //FILE *fp = fopen(base,"w");
+   //debugdump_stringtable(st,fp);
+   //fclose(fp);
+   //fclose(yytok);
 }
 
 
 void yyin_cpp_pclose (void) {
    int pclose_rc = pclose (yyin);
    eprint_status (yyin_cpp_command, pclose_rc);
+   fclose(yytok);
 }
 
 void scan_opts (int argc, char **argv, struct options *options) {
@@ -136,7 +137,7 @@ int main (int argc, char **argv) {
    set_execname (argv[0]);
    scan_opts (argc, argv, &options);
    scanner_setecho (options.echoinput);
-   //parsecode = yyparse();
+   parsecode = yyparse();
    if (parsecode) {
       errprintf ("%:parse failed (%d)\n", parsecode);
    }else {

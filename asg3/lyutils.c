@@ -14,6 +14,7 @@
 
 
 astree yyparse_astree = NULL;
+astree new_tree = NULL;
 int scan_linenr = 1;
 int scan_offset = 0;
 bool scan_echo = FALSE;
@@ -114,6 +115,17 @@ astree new_parseroot (void) {
    yyparse_astree = new_astree (TOK_ROOT, 0, 0, 0, "<<TOK_ROOT>>");
    return yyparse_astree;
 }
+
+astree new_function (void) {
+    new_tree = new_astree(TOK_FUNCTION, filename_stack.last_filenr,scan_linenr,yyleng,"");
+    return new_tree;
+}
+
+astree new_prototype(void) {
+    new_tree = new_astree(TOK_PROTOTYPE, filename_stack.last_filenr,
+                          scan_linenr, yyleng,"");
+    return new_tree;   
+} 
 
 void scanner_include (void) {
    scanner_newline();

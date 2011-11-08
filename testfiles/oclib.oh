@@ -1,12 +1,9 @@
-// $Id: oclib.oh,v 1.6 2011-10-03 20:31:28-07 - - $
+// $Id: oclib.oh,v 1.9 2011-11-07 12:09:34-08 - - $
 
 #ifndef __OCLIB_OH__
 #define __OCLIB_OH__
 
 #define EOF (-1)
-
-char chr (int i);
-int ord (char c);
 
 void putb (bool b);
 void putc (char c);

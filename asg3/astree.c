@@ -77,6 +77,18 @@ astree adopt1sym (astree root, astree child, int symbol) {
    return root;
 }
 
+astree adopt2sym (astree root, astree left, astree right, int symbol) {
+   root = adopt2(root, left, right);
+   root->symbol = symbol;
+   return root;
+}
+
+astree adopt3sym (astree root, astree left, astree middle, astree right, int symbol) {
+    root = adopt3(root, left, middle, right);
+    root->symbol = symbol;
+    return root;
+}
+
 static void dump_node (FILE *outfile, astree node, int depth) {
    assert (is_astree (node));
    fprintf (outfile, "%p-> astree {%s(%d), %d:%d.%03d, %p->\"%s\",\n",
