@@ -59,6 +59,9 @@ astree adopt (astree root, ...) {
    va_end (children);
    return root;
 }
+astree adopt3 (astree root, astree left, astree middle, astree right){
+   return adopt (root, left, middle, right, NULL);
+}
 
 astree adopt2 (astree root, astree left, astree right) {
    return adopt (root, left, right, NULL);

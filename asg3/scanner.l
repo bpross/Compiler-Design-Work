@@ -38,6 +38,12 @@ TOK_EQ          ==
 TOK_NE          !=
 TOK_LE          <=
 TOK_GE          >=
+TOK_NEW		new
+TOK_NULL	null
+TOK_STRUCT	struct
+TOK_STRING	string
+TOK_IF		if
+TOK_INTK	int
 
 %%
 
