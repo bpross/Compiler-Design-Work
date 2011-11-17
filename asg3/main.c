@@ -144,6 +144,7 @@ int main (int argc, char **argv) {
       DEBUGSTMT ('a', dump_astree (stderr, yyparse_astree); );
 //      emit_sm_code (yyparse_astree);
    }
+   dump_astree (stdout, yyparse_astree);
    freeast (yyparse_astree);
    yyin_cpp_pclose();
    return get_exitstatus();

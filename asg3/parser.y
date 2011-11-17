@@ -49,7 +49,7 @@ static void *yycalloc (size_t size);
 
 %%
 
-start       : program             { yyparse_astree = $1; }
+start       : program   { $$ = $1; }
             ;
 
 program     : program structdef   { $$ = adopt1 ($1, $2); } 
@@ -59,7 +59,7 @@ program     : program structdef   { $$ = adopt1 ($1, $2); }
             |                     { $$ = new_parseroot (); } 
             ;
 
-structdef   : TOK_STRUCT TOK_TYPEID identdecls '}' { freeast($4); $$ = adopt2($1, $2, $3); }
+structdef   : TOK_STRUCT TOK_IDENT identdecls '}' { freeast($4); $$ = adopt1sym($1, $2, TOK_TYPEID); $$ = adopt1($1,$3); }
             ;
 
 identdecls  : identdecls identdecl ';' { freeast($3); $$ = adopt1($1, $2) ; }
@@ -74,8 +74,8 @@ basetype    : TOK_VOID     { $$ = $1; }
             | TOK_BOOL     { $$ = $1; }
             | TOK_CHAR     { $$ = $1; }
             | TOK_INT      { $$ = $1; }
-            | 'string'   { $$ = $1; }
-            | TOK_TYPEID { $$ = $1; }
+            | TOK_STRING   { $$ = $1; }
+            | TOK_TYPEID   { $$ = $1; }
             ;
 
 block       : '{' state_list '}'            {freeast($3); $$ = adopt1sym($1,$2,TOK_BLOCK); }
@@ -95,7 +95,7 @@ statement   : block               { $$ = $1; }
             | expr ';'            { freeast($2); $$ = $1; }
             ;
 
-vardeclinit : identdecl '=' expr ';' { freeast($4); adopt2($2, $1, $3) ; }
+vardeclinit : identdecl '=' expr ';' { freeast($4); $$ = adopt2($2, $1, $3) ; }
             ;
 
 whilehead   : TOK_WHILE '(' expr ')' statement { freeast2($2, $4); $$ = adopt2($1, $3, $5) ;}
@@ -110,9 +110,10 @@ returnhead  : TOK_RETURN ';'        { $$ = adopt1sym($1,$2, TOK_RETURNVOID) ; }
             ;
 
 expr        : expr '+' expr { $$ = adopt2($2,$1,$3); }
-            | '+' expr %prec TOK_POS { adopt1sym($1, $2, TOK_POS); }
+            | '+' expr %prec TOK_POS { $$ = adopt1sym($1, $2, TOK_POS); }
             | expr '-' expr { $$ = adopt2($2,$1,$3); }
-            | '-' expr %prec TOK_NEG { adopt1sym($1, $2, TOK_NEG); }
+            | '-' expr %prec TOK_NEG { $$ = adopt1sym($1, $2, TOK_NEG); }
+            | expr '=' expr      { $$ = adopt2($2,$1,$3); }
             | allocator              { $$ = $1 ; }
             | call                   { $$ = $1 ; }
             | variable               { $$ = $1 ; }
@@ -120,16 +121,16 @@ expr        : expr '+' expr { $$ = adopt2($2,$1,$3); }
             | '(' expr ')'           { freeast2($1,$3); $$ = $2; }
             ;
 
-allocator   : TOK_NEW TOK_TYPEID '('')' { freeast2($3,$4); adopt1($1, $2) ;}
-            | TOK_NEW TOK_STRING '(' expr ')' { freeast2($3,$5); adopt1sym($1,$4,TOK_NEWSTRING); }
-            | TOK_NEW basetype '[' expr ']' { freeast2($3,$5); adopt2sym($1,$2,$4,TOK_NEWARRAY); }
+allocator   : TOK_NEW TOK_TYPEID '('')' { freeast2($3,$4); $$ = adopt1($1, $2) ;}
+            | TOK_NEW TOK_STRING '(' expr ')' { freeast2($3,$5); $$ = adopt1sym($1,$4,TOK_NEWSTRING); }
+            | TOK_NEW basetype '[' expr ']' { freeast2($3,$5); $$ = adopt2sym($1,$2,$4,TOK_NEWARRAY); }
             ;
 
 call        : TOK_IDENT call_list ')' { freeast($3); $$ = adopt1sym($2, $1, TOK_CALL); }
             ;
 
 call_list   :  call_list ',' expr      { freeast($2); $$ = adopt1($1, $2) ; }
-            | '(' expr                 { freeast($1); $$ = adopt1($1,$2); }
+            | '(' expr                 { $$ = adopt1($1,$2); }
             ;
 
 variable    : TOK_IDENT        { $$ = $1; }
