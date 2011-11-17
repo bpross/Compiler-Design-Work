@@ -1,0 +1,86 @@
+;#include "../testfiles/04-test4.oc"
+;#include "<built-in>"
+;#include "<command line>"
+;#include "../testfiles/04-test4.oc"
+| ROOT "<<TOK_ROOT>>" 0.0.000 0xb551450-> astree {TOK_ROOT(258), 0:0.000, 0xb551490->"<<TOK_ROOT>>",
+            first=0xb555640, last=0xb5564e0, next=(nil)}
+   | STRUCT "struct" 4.2.000 0xb555640-> astree {TOK_STRUCT(282), 4:2.000, 0xb555680->"struct",
+               first=0xb5556a0, last=0xb555760, next=0xb555880}
+      | TYPEID "foo" 4.2.007 0xb5556a0-> astree {TOK_TYPEID(259), 4:2.007, 0xb5556e0->"foo",
+                  first=(nil), last=(nil), next=0xb555760}
+      | INT "int" 4.3.007 0xb555760-> astree {TOK_INT(286), 4:3.007, 0xb5557a0->"int",
+                  first=0xb5557c0, last=0xb5557c0, next=(nil)}
+         | IDENT "a" 4.3.011 0xb5557c0-> astree {TOK_IDENT(275), 4:3.011, 0xb555800->"a",
+                     first=(nil), last=(nil), next=(nil)}
+   | '=' "=" 4.6.006 0xb555880-> astree {'='(61), 4:6.006, 0xb5558c0->"=",
+               first=0xb555820, last=0xb5558e0, next=0xb555a00}
+      | INT "int" 4.6.000 0xb555820-> astree {TOK_INT(286), 4:6.000, 0xb555860->"int",
+                  first=0xb555700, last=0xb555700, next=0xb5558e0}
+         | IDENT "a" 4.6.004 0xb555700-> astree {TOK_IDENT(275), 4:6.004, 0xb555740->"a",
+                     first=(nil), last=(nil), next=(nil)}
+      | INTCON "6" 4.6.008 0xb5558e0-> astree {TOK_INTCON(277), 4:6.008, 0xb555920->"6",
+                  first=(nil), last=(nil), next=(nil)}
+   | '=' "=" 4.7.006 0xb555a00-> astree {'='(61), 4:7.006, 0xb555a40->"=",
+               first=0xb555940, last=0xb555a60, next=0xb555c40}
+      | IDENT "foo" 4.7.000 0xb555940-> astree {TOK_IDENT(275), 4:7.000, 0xb555980->"foo",
+                  first=0xb5559a0, last=0xb5559a0, next=0xb555a60}
+         | IDENT "b" 4.7.004 0xb5559a0-> astree {TOK_IDENT(275), 4:7.004, 0xb5559e0->"b",
+                     first=(nil), last=(nil), next=(nil)}
+      | NEW "new" 4.7.008 0xb555a60-> astree {TOK_NEW(279), 4:7.008, 0xb555aa0->"new",
+                  first=0xb555ac0, last=0xb555ac0, next=(nil)}
+         | TYPEID "foo" 4.7.012 0xb555ac0-> astree {TOK_TYPEID(259), 4:7.012, 0xb555b00->"foo",
+                     first=(nil), last=(nil), next=(nil)}
+   | '=' "=" 4.8.004 0xb555c40-> astree {'='(61), 4:8.004, 0xb555c80->"=",
+               first=0xb555b20, last=0xb555ca0, next=0xb555d60}
+      | '.' "." 4.8.001 0xb555b20-> astree {'.'(46), 4:8.001, 0xb555b60->".",
+                  first=0xb555b80, last=0xb555be0, next=0xb555ca0}
+         | IDENT "b" 4.8.000 0xb555b80-> astree {TOK_IDENT(275), 4:8.000, 0xb555bc0->"b",
+                     first=(nil), last=(nil), next=0xb555be0}
+         | IDENT "a" 4.8.002 0xb555be0-> astree {TOK_IDENT(275), 4:8.002, 0xb555c20->"a",
+                     first=(nil), last=(nil), next=(nil)}
+      | INTCON "8" 4.8.006 0xb555ca0-> astree {TOK_INTCON(277), 4:8.006, 0xb555ce0->"8",
+                  first=(nil), last=(nil), next=(nil)}
+   | '=' "=" 4.9.002 0xb555d60-> astree {'='(61), 4:9.002, 0xb555da0->"=",
+               first=0xb555d00, last=0xb555fa0, next=0xb5560c0}
+      | IDENT "a" 4.9.000 0xb555d00-> astree {TOK_IDENT(275), 4:9.000, 0xb555d40->"a",
+                  first=(nil), last=(nil), next=0xb555fa0}
+      | '+' "+" 4.9.012 0xb555fa0-> astree {'+'(43), 4:9.012, 0xb555fe0->"+",
+                  first=0xb555e20, last=0xb556000, next=(nil)}
+         | '*' "*" 4.9.006 0xb555e20-> astree {'*'(42), 4:9.006, 0xb555e60->"*",
+                     first=0xb555dc0, last=0xb555ee0, next=0xb556000}
+            | IDENT "a" 4.9.004 0xb555dc0-> astree {TOK_IDENT(275), 4:9.004, 0xb555e00->"a",
+                        first=(nil), last=(nil), next=0xb555ee0}
+            | '.' "." 4.9.009 0xb555ee0-> astree {'.'(46), 4:9.009, 0xb555f20->".",
+                        first=0xb555e80, last=0xb555f40, next=(nil)}
+               | IDENT "b" 4.9.008 0xb555e80-> astree {TOK_IDENT(275), 4:9.008, 0xb555ec0->"b",
+                           first=(nil), last=(nil), next=0xb555f40}
+               | IDENT "a" 4.9.010 0xb555f40-> astree {TOK_IDENT(275), 4:9.010, 0xb555f80->"a",
+                           first=(nil), last=(nil), next=(nil)}
+         | INTCON "6" 4.9.014 0xb556000-> astree {TOK_INTCON(277), 4:9.014, 0xb556040->"6",
+                     first=(nil), last=(nil), next=(nil)}
+   | CALL "(" 4.11.005 0xb5560c0-> astree {TOK_CALL(264), 4:11.005, 0xb556100->"(",
+               first=0xb556120, last=0xb556060, next=0xb5561e0}
+      | IDENT "a" 4.11.006 0xb556120-> astree {TOK_IDENT(275), 4:11.006, 0xb556160->"a",
+                  first=(nil), last=(nil), next=0xb556060}
+      | IDENT "puti" 4.11.000 0xb556060-> astree {TOK_IDENT(275), 4:11.000, 0xb5560a0->"puti",
+                  first=(nil), last=(nil), next=(nil)}
+   | CALL "(" 4.12.005 0xb5561e0-> astree {TOK_CALL(264), 4:12.005, 0xb556220->"(",
+               first=0xb556240, last=0xb556180, next=0xb556300}
+      | CHARCON "' '" 4.12.006 0xb556240-> astree {TOK_CHARCON(276), 4:12.006, 0xb556280->"' '",
+                  first=(nil), last=(nil), next=0xb556180}
+      | IDENT "putc" 4.12.000 0xb556180-> astree {TOK_IDENT(275), 4:12.000, 0xb5561c0->"putc",
+                  first=(nil), last=(nil), next=(nil)}
+   | CALL "(" 4.13.005 0xb556300-> astree {TOK_CALL(264), 4:13.005, 0xb556340->"(",
+               first=0xb5563c0, last=0xb5562a0, next=0xb5564e0}
+      | '.' "." 4.13.007 0xb5563c0-> astree {'.'(46), 4:13.007, 0xb556400->".",
+                  first=0xb556360, last=0xb556420, next=0xb5562a0}
+         | IDENT "b" 4.13.006 0xb556360-> astree {TOK_IDENT(275), 4:13.006, 0xb5563a0->"b",
+                     first=(nil), last=(nil), next=0xb556420}
+         | IDENT "a" 4.13.008 0xb556420-> astree {TOK_IDENT(275), 4:13.008, 0xb556460->"a",
+                     first=(nil), last=(nil), next=(nil)}
+      | IDENT "puti" 4.13.000 0xb5562a0-> astree {TOK_IDENT(275), 4:13.000, 0xb5562e0->"puti",
+                  first=(nil), last=(nil), next=(nil)}
+   | CALL "(" 4.14.005 0xb5564e0-> astree {TOK_CALL(264), 4:14.005, 0xb556520->"(",
+               first=0xb556480, last=0xb556480, next=(nil)}
+      | IDENT "endl" 4.14.000 0xb556480-> astree {TOK_IDENT(275), 4:14.000, 0xb5564c0->"endl",
+                  first=(nil), last=(nil), next=(nil)}

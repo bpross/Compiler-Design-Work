@@ -40,78 +40,88 @@
       know about them.  */
    enum yytokentype {
      TOK_ROOT = 258,
-     TOK_VOID = 259,
-     TOK_BOOL = 260,
-     TOK_CHAR = 261,
-     TOK_INT = 262,
-     TOK_STRING = 263,
-     TOK_IF = 264,
-     TOK_ELSE = 265,
-     TOK_WHILE = 266,
-     TOK_RETURN = 267,
-     TOK_STRUCT = 268,
-     TOK_FALSE = 269,
-     TOK_TRUE = 270,
-     TOK_NULL = 271,
-     TOK_NEW = 272,
-     TOK_ARRAY = 273,
-     TOK_EQ = 274,
-     TOK_NE = 275,
-     TOK_LT = 276,
-     TOK_LE = 277,
-     TOK_GT = 278,
-     TOK_GE = 279,
-     TOK_IDENT = 280,
-     TOK_INTCON = 281,
-     TOK_CHARCON = 282,
-     TOK_STRINGCON = 283,
-     TOK_BLOCK = 284,
-     TOK_CALL = 285,
-     TOK_IFELSE = 286,
-     TOK_INITDECL = 287,
-     TOK_POS = 288,
-     TOK_NEG = 289,
-     TOK_NEWARRAY = 290,
-     TOK_TYPEID = 291,
-     TOK_FIELD = 292
+     TOK_TYPEID = 259,
+     TOK_FIELD = 260,
+     TOK_INDEX = 261,
+     TOK_POS = 262,
+     TOK_NEG = 263,
+     TOK_CALL = 264,
+     TOK_NEWARRAY = 265,
+     TOK_NEWSTRING = 266,
+     TOK_IFELSE = 267,
+     TOK_RETURNVOID = 268,
+     TOK_BLOCK = 269,
+     TOK_VARDECLINIT = 270,
+     TOK_FUNCTION = 271,
+     TOK_PARAMLIST = 272,
+     TOK_PROTOTYPE = 273,
+     TOK_WHILE = 274,
+     TOK_IDENT = 275,
+     TOK_CHARCON = 276,
+     TOK_INTCON = 277,
+     TOK_STRINGCON = 278,
+     TOK_NEW = 279,
+     TOK_NULL = 280,
+     TOK_STRING = 281,
+     TOK_STRUCT = 282,
+     TOK_VOID = 283,
+     TOK_BOOL = 284,
+     TOK_CHAR = 285,
+     TOK_INT = 286,
+     TOK_RETURN = 287,
+     TOK_FALSE = 288,
+     TOK_TRUE = 289,
+     TOK_LE = 290,
+     TOK_GE = 291,
+     TOK_ELSE = 292,
+     TOK_IF = 293,
+     TOK_GT = 294,
+     TOK_LT = 295,
+     TOK_NE = 296,
+     TOK_EQ = 297
    };
 #endif
 /* Tokens.  */
 #define TOK_ROOT 258
-#define TOK_VOID 259
-#define TOK_BOOL 260
-#define TOK_CHAR 261
-#define TOK_INT 262
-#define TOK_STRING 263
-#define TOK_IF 264
-#define TOK_ELSE 265
-#define TOK_WHILE 266
-#define TOK_RETURN 267
-#define TOK_STRUCT 268
-#define TOK_FALSE 269
-#define TOK_TRUE 270
-#define TOK_NULL 271
-#define TOK_NEW 272
-#define TOK_ARRAY 273
-#define TOK_EQ 274
-#define TOK_NE 275
-#define TOK_LT 276
-#define TOK_LE 277
-#define TOK_GT 278
-#define TOK_GE 279
-#define TOK_IDENT 280
-#define TOK_INTCON 281
-#define TOK_CHARCON 282
-#define TOK_STRINGCON 283
-#define TOK_BLOCK 284
-#define TOK_CALL 285
-#define TOK_IFELSE 286
-#define TOK_INITDECL 287
-#define TOK_POS 288
-#define TOK_NEG 289
-#define TOK_NEWARRAY 290
-#define TOK_TYPEID 291
-#define TOK_FIELD 292
+#define TOK_TYPEID 259
+#define TOK_FIELD 260
+#define TOK_INDEX 261
+#define TOK_POS 262
+#define TOK_NEG 263
+#define TOK_CALL 264
+#define TOK_NEWARRAY 265
+#define TOK_NEWSTRING 266
+#define TOK_IFELSE 267
+#define TOK_RETURNVOID 268
+#define TOK_BLOCK 269
+#define TOK_VARDECLINIT 270
+#define TOK_FUNCTION 271
+#define TOK_PARAMLIST 272
+#define TOK_PROTOTYPE 273
+#define TOK_WHILE 274
+#define TOK_IDENT 275
+#define TOK_CHARCON 276
+#define TOK_INTCON 277
+#define TOK_STRINGCON 278
+#define TOK_NEW 279
+#define TOK_NULL 280
+#define TOK_STRING 281
+#define TOK_STRUCT 282
+#define TOK_VOID 283
+#define TOK_BOOL 284
+#define TOK_CHAR 285
+#define TOK_INT 286
+#define TOK_RETURN 287
+#define TOK_FALSE 288
+#define TOK_TRUE 289
+#define TOK_LE 290
+#define TOK_GE 291
+#define TOK_ELSE 292
+#define TOK_IF 293
+#define TOK_GT 294
+#define TOK_LT 295
+#define TOK_NE 296
+#define TOK_EQ 297
 
 
 
