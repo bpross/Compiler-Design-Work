@@ -59,11 +59,11 @@ program     : program structdef   { $$ = adopt1 ($1, $2); }
             |                     { $$ = new_parseroot (); } 
             ;
 
-structdef   : TOK_STRUCT TOK_IDENT identdecls '}' { freeast($4); $$ = adopt1sym($1, $2, TOK_TYPEID); $$ = adopt1($1,$3); }
+structdef   : TOK_STRUCT TOK_TYPEID '{' identdecls '}' { freeast2($3,$5); $$ = adoptsym($2, TOK_TYPEID); $$ = adopt1($1, $2); $$ = adopt1($1,$4); }
             ;
 
 identdecls  : identdecls identdecl ';' { freeast($3); $$ = adopt1($1, $2) ; }
-            | '{' identdecl ';'        { freeast2($1, $3); $$ = $2;  }
+            | identdecl ';'        { freeast($2); $$ = $1;  }
             ;
 
 identdecl   : basetype TOK_NEWARRAY TOK_IDENT { $$ = adopt2($1, $2, $3); }

@@ -71,6 +71,10 @@ astree adopt1 (astree root, astree child) {
    return adopt (root, child, NULL);
 }
 
+astree adoptsym (astree root, int symbol) {
+    root->symbol = symbol;
+    return root;
+}
 astree adopt1sym (astree root, astree child, int symbol) {
    root = adopt1 (root, child);
    root->symbol = symbol;

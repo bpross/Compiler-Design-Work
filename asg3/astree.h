@@ -16,6 +16,7 @@ astree adopt (astree root, /*ASTree*/ ... /*, NULL */);
 astree adopt1 (astree root, astree child);
 astree adopt2 (astree root, astree left, astree right);
 astree adopt3 (astree root, astree left, astree middle, astree right);
+astree adoptsym(astree root, int symbol);
 astree adopt1sym (astree root, astree child, int symbol);
 astree adopt2sym (astree root, astree left, astree right, int symbol);
 astree adopt3sym (astree root, astree left, astree middle, astree right, int symbol);
