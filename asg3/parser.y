@@ -102,8 +102,10 @@ vardeclinit : identdecl '=' expr ';' { freeast($4); $$ = adopt2($2, $1, $3) ; }
 whilehead   : TOK_WHILE '(' expr ')' statement { freeast2($2, $4); $$ = adopt2($1, $3, $5) ;}
             ;
 
-ifelse      : TOK_IF '(' expr ')' statement TOK_ELSE statement { freeast($6); $$ = adopt3sym($1,$2,$5,$7,TOK_IFELSE);}
-            | TOK_IF '(' expr ')' statement {freeast2($2, $4); $$ = adopt2($1, $3, $5); }
+ifelse      : ifhead statement TOK_ELSE statement { freeast($3); $$ = adopt2($1,$2,$4); }
+            | ifhead statement %prec TOK_ELSE     {  $$ = adopt1($1,$2); }
+
+ifhead      : TOK_IF '(' expr ')' { freeast2($2,$4); $$ = adopt1($1,$3); }
             ;
 
 returnhead  : TOK_RETURN ';'        { $$ = adopt1sym($1,$2, TOK_RETURNVOID) ; }
