@@ -54,6 +54,7 @@ start       : program   { $$ = $1; }
 
 program     : program structdef   { $$ = adopt1 ($1, $2); } 
             | program statement   { $$ = adopt1 ($1, $2); } 
+            | program function    { $$ = adopt1 ($1, $2); } 
             | program error '}'   { $$ = adopt1 ($$, $1); } 
             | program error ';'   { $$ = adopt1 ($$, $1); } 
             |                     { $$ = new_parseroot (); } 
@@ -61,6 +62,22 @@ program     : program structdef   { $$ = adopt1 ($1, $2); }
 
 structdef   : TOK_STRUCT TOK_IDENT '{' identdecls '}' { freeast2($3,$5); $2 = adoptsym($2,TOK_TYPEID); $$ = adopt2($1, $2, $4);}
             ;
+
+function    : identdecl paramlist ')' block  { astree a = new_function();
+                                               a = adopt2($1, $2, $4);
+                                               $$ = a; }
+            | identdecl paramlist ')' ';'    { astree a = new_prototype();
+                                               a = adopt1($1, $2);
+                                               freeast($4);
+                                               $$ = a; }
+            ;
+
+
+paramlist   : '(' identdecl                  { adopt1sym($1,$2, TOK_PARAMLIST); }
+            | paramlist ',' identdecl        { freeast($2); adopt1($1, $3); }
+            | '('                            { adoptsym($1, TOK_PARAMLIST); $$ = $1; }
+            ;
+
 
 identdecls  : identdecl ';'        { freeast($2); $$ = $1;  }
             | identdecls identdecl ';' { freeast($3); $$ = adopt1($1, $2) ; }
