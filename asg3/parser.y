@@ -117,8 +117,8 @@ expr        : expr '+' expr { $$ = adopt2($2,$1,$3); }
             | expr '=' expr          { $$ = adopt2($2,$1,$3); }
             | expr TOK_EQ expr       { $$ = adopt2($2,$1,$3); }
             | expr TOK_NE expr       { $$ = adopt2($2,$1,$3); }
-            | expr '<' expr          { $$ = adopt2($2,$1,$3); }
-            | expr '>' expr          { $$ = adopt2($2,$1,$3); }
+            | expr TOK_LT expr          { $$ = adopt2($2,$1,$3); }
+            | expr TOK_GT expr          { $$ = adopt2($2,$1,$3); }
             | expr TOK_LE expr       { $$ = adopt2($2,$1,$3); }
             | expr TOK_GE expr       { $$ = adopt2($2,$1,$3); }
             | expr '.' expr          { $$ = adopt2($2,$1,$3); } 
