@@ -11,10 +11,12 @@
 
 #include "astree.h"
 #include "auxlib.h"
+#include "stringtable.h"
 
 #define YYEOF 0
 
 extern FILE *yyin;
+stringtable_ref st;
 FILE *yytok;
 extern astree yyparse_astree;
 extern int yyin_linenr;

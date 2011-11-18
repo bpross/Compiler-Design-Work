@@ -105,9 +105,13 @@ void print_tok(int symbol) {
             get_yytname(symbol), yytext);
 }
 
+
+
 int yyprint_token(int symbol){
+    stringnode_ref sn;
     yylval_token(symbol);
     print_tok(symbol);
+    sn = intern_stringtable(st, yytext);
     return symbol;
 }
 

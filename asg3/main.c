@@ -14,10 +14,11 @@
 #include "astree.h"
 #include "lyutils.h"
 #include "auxlib.h"
-#include "stringtable.h"
+//#include "stringtable.h"
 #include "strhash.h"
 
 #define CPP "/usr/bin/cpp"
+
 
 struct options{
    bool dumptree;
@@ -73,7 +74,7 @@ void yyin_cpp_popen (char *filename) {
    strcpy(tok,base);
    strcat(tok,".tok");
    yytok = fopen(tok,"w");
-
+   st = new_stringtable();
    yyin_cpp_command = malloc (strlen (CPP) + strlen (filename) + 2);
    assert (yyin_cpp_command != NULL);
    strcpy (yyin_cpp_command, CPP);
@@ -84,17 +85,10 @@ void yyin_cpp_popen (char *filename) {
       syserrprintf (yyin_cpp_command);
       exit (get_exitstatus());
    }
-   //   int token;
-   //stringtable_ref st = new_stringtable();
-   //stringnode_ref sn;
-   //for (token = yylex(); token != 0; token=yylex()){
-   //   sn = intern_stringtable(st, yytext);
-   //}
-   //strcat(base,".str");
-   //FILE *fp = fopen(base,"w");
-   //debugdump_stringtable(st,fp);
-   //fclose(fp);
-   //fclose(yytok);
+   strcat(base,".str");
+   FILE *fp = fopen(base,"w");
+   debugdump_stringtable(st,fp);
+   fclose(fp);
 }
 
 
