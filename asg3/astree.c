@@ -110,8 +110,17 @@ static void dump_astree_rec (FILE *outfile, astree root, int depth) {
    assert (is_astree (root));
    const char *tname = get_yytname(root->symbol);
    if (strstr (tname, "TOK_") == tname) tname += 4;
-   fprintf (outfile, "%*s| %s \"%s\" %d.%d.%03d ", depth * 3, "", tname, root->lexinfo, root->filenr, root->linenr, root->offset);
-   dump_node (outfile, root, depth);
+   if(depth == 0){
+   fprintf (outfile, "%*s%s \"%s\" %d.%d.%03d ", depth * 3, "", tname, root->lexinfo, root->filenr, root->linenr, root->offset);
+   }
+   else{
+     int i;
+     for(i =0 ; i < depth; ++i){
+         fprintf(outfile, "%*s ", 1, "|");
+     }
+     fprintf (outfile, "%s \"%s\" %d.%d.%03d ", tname, root->lexinfo, root->filenr, root->linenr, root->offset);
+   }
+//   dump_node (outfile, root, depth);
    fprintf (outfile, "\n");
    for (child = root->first; child != NULL; child = child->next) {
       dump_astree_rec (outfile, child, depth + 1);
