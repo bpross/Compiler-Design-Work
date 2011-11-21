@@ -68,7 +68,7 @@ char *yyin_cpp_command = NULL;
 void yyin_cpp_popen (char *filename) {
    char temp_file[1024];
    strcpy(temp_file,filename);
-   char *base = basename(temp_file); char tok[1024]; char ast[1024];
+   char *base = basename(temp_file); char tok[1024]; char ast[1024]; char str[1024];
    remove_file_ext(base);
 
    strcpy(tok,base);
@@ -77,6 +77,9 @@ void yyin_cpp_popen (char *filename) {
    strcpy(ast,base);
    strcat(ast,".ast");
    yyast = fopen(ast,"w");
+   strcpy(str,base);
+   strcat(str,".str");
+   yystr = fopen(str,"w");
    
 
    st = new_stringtable();
@@ -90,19 +93,23 @@ void yyin_cpp_popen (char *filename) {
       syserrprintf (yyin_cpp_command);
       exit (get_exitstatus());
    }
+/*
    strcat(base,".str");
    FILE *fp = fopen(base,"w");
    debugdump_stringtable(st,fp);
    fclose(fp);
+*/
 }
 
 
 void yyin_cpp_pclose (void) {
    int pclose_rc = pclose (yyin);
    dump_astree (yyast, yyparse_astree);
+   debugdump_stringtable(st,yystr); 
    eprint_status (yyin_cpp_command, pclose_rc);
    fclose(yytok);
    fclose(yyast);
+   fclose(yystr);
 }
 
 void scan_opts (int argc, char **argv, struct options *options) {

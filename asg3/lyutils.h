@@ -19,6 +19,7 @@ extern FILE *yyin;
 stringtable_ref st;
 FILE *yytok;
 FILE *yyast;
+FILE *yystr;
 extern astree yyparse_astree;
 extern int yyin_linenr;
 extern char *yytext;
