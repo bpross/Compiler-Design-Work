@@ -116,7 +116,7 @@ statement   : block               { $$ = $1; }
 vardeclinit : identdecl '=' expr ';' { freeast($4); $$ = adopt2($2, $1, $3) ; }
             ;
 
-whilehead   : TOK_WHILE '(' expr ')' statement block statement { freeast2($2, $4); $$ = adopt2($1, $3, $5) ;}
+whilehead   : TOK_WHILE '(' expr ')' statement { freeast2($2, $4); $$ = adopt2($1, $3, $5) ;}
             ;
 
 ifelse      : ifhead statement TOK_ELSE statement { freeast($3); $$ = adopt2($1,$2,$4); }
