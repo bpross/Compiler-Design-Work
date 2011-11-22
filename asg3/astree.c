@@ -87,7 +87,8 @@ astree adopt2sym (astree root, astree left, astree right, int symbol) {
    return root;
 }
 
-astree adopt3sym (astree root, astree left, astree middle, astree right, int symbol) {
+astree adopt3sym (astree root, astree left, astree middle,
+                  astree right, int symbol) {
     root = adopt3(root, left, middle, right);
     root->symbol = symbol;
     return root;
@@ -111,14 +112,16 @@ static void dump_astree_rec (FILE *outfile, astree root, int depth) {
    const char *tname = get_yytname(root->symbol);
    if (strstr (tname, "TOK_") == tname) tname += 4;
    if(depth == 0){
-   fprintf (outfile, "%*s%s \"%s\" %d.%d.%03d ", depth * 3, "", tname, root->lexinfo, root->filenr, root->linenr, root->offset);
+   fprintf (outfile, "%*s%s \"%s\" %d.%d.%03d ", depth * 3, "",
+    tname, root->lexinfo, root->filenr, root->linenr, root->offset);
    }
    else{
      int i;
      for(i =0 ; i < depth; ++i){
          fprintf(outfile, "%*s ", 1, "|");
      }
-     fprintf (outfile, "%s \"%s\" %d.%d.%03d ", tname, root->lexinfo, root->filenr, root->linenr, root->offset);
+     fprintf (outfile, "%s \"%s\" %d.%d.%03d ", tname, root->lexinfo,
+              root->filenr, root->linenr, root->offset);
    }
 //   dump_node (outfile, root, depth);
    fprintf (outfile, "\n");

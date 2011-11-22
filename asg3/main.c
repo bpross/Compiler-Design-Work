@@ -68,7 +68,10 @@ char *yyin_cpp_command = NULL;
 void yyin_cpp_popen (char *filename) {
    char temp_file[1024];
    strcpy(temp_file,filename);
-   char *base = basename(temp_file); char tok[1024]; char ast[1024]; char str[1024];
+   char *base = basename(temp_file);
+   char tok[1024];
+   char ast[1024];
+   char str[1024];
    remove_file_ext(base);
 
    strcpy(tok,base);

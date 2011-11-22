@@ -19,13 +19,17 @@ astree adopt3 (astree root, astree left, astree middle, astree right);
 astree adoptsym(astree root, int symbol);
 astree adopt1sym (astree root, astree child, int symbol);
 astree adopt2sym (astree root, astree left, astree right, int symbol);
-astree adopt3sym (astree root, astree left, astree middle, astree right, int symbol);
+astree adopt3sym (astree root, astree left, astree middle,
+                  astree right, int symbol);
 void dump_astree (FILE *outfile, astree root);
 void yyprint (FILE *outfile, unsigned short toknum, astree yyvaluep);
 void freeast (astree tree);
 
 #define freeast2(T1,T2) { freeast (T1); freeast (T2); }
-#define freeast3(T1,T2,T3) { freeast (T1); freeast (T2); freeast(T3) }
-#define freeast4(T1,T2,T3,T4) { freeast (T1); freeast (T2); freeast(T3), freeast(T4) }
+#define freeast3(T1,T2,T3) { freeast (T1) freeast (T2); freeast(T3) }; 
 
+#define freeast4(T1,T2,T3,T4) { freeast (T1); \
+               freeast (T2); freeast(T3), freeast(T4) }
+
+               
 #endif
