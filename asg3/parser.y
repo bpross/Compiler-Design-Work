@@ -116,7 +116,7 @@ statement   : block               { $$ = $1; }
 vardeclinit : identdecl '=' expr ';' { freeast($4); $$ = adopt2($2, $1, $3) ; }
             ;
 
-whilehead   : TOK_WHILE '(' expr ')' statement { freeast2($2, $4); $$ = adopt2($1, $3, $5) ;}
+whilehead   : TOK_WHILE '(' expr ')' statement block statement { freeast2($2, $4); $$ = adopt2($1, $3, $5) ;}
             ;
 
 ifelse      : ifhead statement TOK_ELSE statement { freeast($3); $$ = adopt2($1,$2,$4); }
@@ -147,7 +147,7 @@ expr        : expr '+' expr          { $$ = adopt2($2,$1,$3); }
             | variable               { $$ = $1 ; }
             | constant               { $$ = $1 ; }
             | '(' expr ')'           { freeast2($1,$3); $$ = $2; }
-            | '!' '(' expr ')'       { freeast2($1,$2); freeast($4); $$ = $3; }
+            | '!' expr               { $$ = adopt1($2, $1); }
             ;
 
 allocator   : TOK_NEW TOK_IDENT '('')' { freeast2($3,$4); $2 = adoptsym($2, TOK_TYPEID); $$ = adopt1($1, $2) ;}
