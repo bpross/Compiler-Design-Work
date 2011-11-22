@@ -38,7 +38,7 @@ MOBJECT     = ${MSOURCE:.c=.o}
 OTHERS      = ${MKFILE} README PARTNER ${MSOURCE} ${MHEADER}
 ALLSOURCES  = ${HEADER} ${SOURCE} ${OTHERS} ${ALLGENS} ${YY}
 CLASS       = cmps104a-wm.f11
-PROJECT     = asg3
+PROJECT     = asg4
 
 all : ${EXECBIN}
 	checksource ${ALLSOURCES}

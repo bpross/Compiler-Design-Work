@@ -129,15 +129,15 @@ returnhead  : TOK_RETURN ';'        { $$ = adopt1sym($1,$2, TOK_RETURNVOID) ; }
             | TOK_RETURN expr ';'   { freeast($3);  $$ = adopt1($1, $2) ; }
             ;
 
-expr        : expr '+' expr { $$ = adopt2($2,$1,$3); }
+expr        : expr '+' expr          { $$ = adopt2($2,$1,$3); }
             | '+' expr %prec TOK_POS { $$ = adopt1sym($1, $2, TOK_POS); }
-            | expr '-' expr { $$ = adopt2($2,$1,$3); }
+            | expr '-' expr          { $$ = adopt2($2,$1,$3); }
             | '-' expr %prec TOK_NEG { $$ = adopt1sym($1, $2, TOK_NEG); }
             | expr '=' expr          { $$ = adopt2($2,$1,$3); }
             | expr TOK_EQ expr       { $$ = adopt2($2,$1,$3); }
             | expr TOK_NE expr       { $$ = adopt2($2,$1,$3); }
-            | expr TOK_LT expr          { $$ = adopt2($2,$1,$3); }
-            | expr TOK_GT expr          { $$ = adopt2($2,$1,$3); }
+            | expr TOK_LT expr       { $$ = adopt2($2,$1,$3); }
+            | expr TOK_GT expr       { $$ = adopt2($2,$1,$3); }
             | expr TOK_LE expr       { $$ = adopt2($2,$1,$3); }
             | expr TOK_GE expr       { $$ = adopt2($2,$1,$3); }
             | expr '.' expr          { $$ = adopt2($2,$1,$3); } 
@@ -147,6 +147,7 @@ expr        : expr '+' expr { $$ = adopt2($2,$1,$3); }
             | variable               { $$ = $1 ; }
             | constant               { $$ = $1 ; }
             | '(' expr ')'           { freeast2($1,$3); $$ = $2; }
+            | '!' '(' expr ')'       { freeast2($1,$2); freeast($4); $$ = $3; }
             ;
 
 allocator   : TOK_NEW TOK_IDENT '('')' { freeast2($3,$4); $2 = adoptsym($2, TOK_TYPEID); $$ = adopt1($1, $2) ;}
@@ -158,8 +159,9 @@ call        : TOK_IDENT call_list ')' { freeast($3); $$ = adopt1sym($2, $1, TOK_
             | TOK_IDENT '(' ')'       { freeast($3); $$ = adopt1sym($2, $1, TOK_CALL); }
             ;
 
-call_list   :  call_list ',' expr      { freeast($2); $$ = adopt1($1, $2) ; }
-            | '(' expr                 { $$ = adopt1($1,$2); }
+call_list   : '(' expr                 { $$ = adopt1($1,$2); }
+            |  call_list ',' expr      { freeast($2); $$ = adopt1($1, $3) ; }
+            | '('                      { $$ = $1; }
             ;
 
 variable    : TOK_IDENT        { $$ = $1; }
