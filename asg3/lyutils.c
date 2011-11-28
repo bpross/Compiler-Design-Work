@@ -121,7 +121,8 @@ astree new_parseroot (void) {
 }
 
 astree new_function (void) {
-    new_tree = new_astree(TOK_FUNCTION, filename_stack.last_filenr,scan_linenr,yyleng,"");
+    new_tree = new_astree(TOK_FUNCTION, filename_stack.last_filenr,
+                          scan_linenr,yyleng,"");
     return new_tree;
 }
 
