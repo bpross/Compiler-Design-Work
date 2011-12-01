@@ -6,6 +6,8 @@
 #define __ASTREE_H__
 
 #include "auxlib.h"
+#include "stringtable.h"
+#include "symboltable.h"
 
 typedef struct astree_rep *astree;
 
@@ -22,6 +24,7 @@ astree adopt2sym (astree root, astree left, astree right, int symbol);
 astree adopt3sym (astree root, astree left, astree middle,
                   astree right, int symbol);
 void dump_astree (FILE *outfile, astree root);
+void ast_dfspost_traverse(astree root, symboltable_ref sym_table, stringtable_ref st);
 void yyprint (FILE *outfile, unsigned short toknum, astree yyvaluep);
 void freeast (astree tree);
 

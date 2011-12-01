@@ -12,6 +12,7 @@
 #include "astree.h"
 #include "astree.rep.h"
 #include "lyutils.h"
+#include "symboltable.h"
 
 static char *astree_tag = "struct astree_rep";
 
@@ -128,6 +129,23 @@ static void dump_astree_rec (FILE *outfile, astree root, int depth) {
    for (child = root->first; child != NULL; child = child->next) {
       dump_astree_rec (outfile, child, depth + 1);
    }
+}
+
+void ast_dfspost_traverse(astree root, symboltable_ref sym_table, stringtable_ref st){
+    if(root == NULL) return;
+    assert(is_astree(root));
+    astree child = NULL;
+    cstring name = strdup(root->lexinfo);
+    stringnode_ref strnode;
+    strnode = intern_stringtable(st, name);
+    cstring data = peek_stringtable(strnode);
+    for(child = root->first; child != NULL; child = child->next){
+        ast_dfspost_traverse(child, sym_table, st);
+    }
+    printf("node = %s\n", root->lexinfo);
+    if(strnode != NULL){
+      printf("strnode %s\n", data);
+    }
 }
 
 void dump_astree (FILE *outfile, astree root) {

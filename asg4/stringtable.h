@@ -2,7 +2,7 @@
 // TA: Richard Halpert
 // Professor: Wesley Mackey
 // CMPS 104a
-#ifndef __STRTABLE_H__
+#ifndef __STRINGTABLE_H__
 #define __STRINGTABLE_H__
 
 #include "strhash.h"

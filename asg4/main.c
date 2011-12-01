@@ -16,6 +16,7 @@
 #include "auxlib.h"
 //#include "stringtable.h"
 #include "strhash.h"
+#include "symboltable.h"
 
 #define CPP "/usr/bin/cpp"
 
@@ -107,8 +108,6 @@ void yyin_cpp_popen (char *filename) {
 
 void yyin_cpp_pclose (void) {
    int pclose_rc = pclose (yyin);
-   dump_astree (yyast, yyparse_astree);
-   debugdump_stringtable(st,yystr); 
    eprint_status (yyin_cpp_command, pclose_rc);
    fclose(yytok);
    fclose(yyast);
@@ -145,6 +144,8 @@ void scan_opts (int argc, char **argv, struct options *options) {
 int main (int argc, char **argv) {
    struct options options = {FALSE, FALSE};
    int parsecode = 0;
+   symboltable_ref sym_table;
+   sym_table = new_symboltable();
    set_execname (argv[0]);
    scan_opts (argc, argv, &options);
    scanner_setecho (options.echoinput);
@@ -156,6 +157,9 @@ int main (int argc, char **argv) {
 //      emit_sm_code (yyparse_astree);
    }
    //freeast (yyparse_astree);
+   dump_astree (yyast, yyparse_astree);
+   debugdump_stringtable(st,yystr); 
+   ast_dfspost_traverse(yyparse_astree, sym_table, st);
    yyin_cpp_pclose();
    return get_exitstatus();
 }
