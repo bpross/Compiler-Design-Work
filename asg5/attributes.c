@@ -1,38 +1,5 @@
-// $Id: attributes.c,v 1.27 2011-11-09 19:52:39-08 - - $
 
-//
-// Example which shows how to manage attributes as bitsets and
-// how to print them.
-//
-
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef unsigned long bitset_t;
-
-typedef enum {FALSE = 0, TRUE = 1} bool;
-
-enum {
-   ATTR_INDEX_VOID     =  0,
-   ATTR_INDEX_BOOL     =  1,
-   ATTR_INDEX_CHAR     =  2,
-   ATTR_INDEX_INT      =  3,
-   ATTR_INDEX_NULL     =  4,
-   ATTR_INDEX_STRING   =  5,
-   ATTR_INDEX_STRUCT   =  6,
-   ATTR_INDEX_ARRAY    =  7,
-   ATTR_INDEX_FUNCTION =  8,
-   ATTR_INDEX_VARIABLE =  9,
-   ATTR_INDEX_FIELD    = 10,
-   ATTR_INDEX_TYPEID   = 11,
-   ATTR_INDEX_PARAM    = 12,
-   ATTR_INDEX_LVALUE   = 13,
-   ATTR_INDEX_CONST    = 14,
-   ATTR_INDEX_VREG     = 15,
-   ATTR_INDEX_VADDR    = 16,
-};
-
+#include "attributes.h"
 const bitset_t ATTR_VOID     = 1 << ATTR_INDEX_VOID;
 const bitset_t ATTR_BOOL     = 1 << ATTR_INDEX_BOOL;
 const bitset_t ATTR_CHAR     = 1 << ATTR_INDEX_CHAR;
@@ -50,23 +17,6 @@ const bitset_t ATTR_LVALUE   = 1 << ATTR_INDEX_LVALUE;
 const bitset_t ATTR_CONST    = 1 << ATTR_INDEX_CONST;
 const bitset_t ATTR_VREG     = 1 << ATTR_INDEX_VREG;
 const bitset_t ATTR_VADDR    = 1 << ATTR_INDEX_VADDR;
-
-bitset_t bitset (int attribute_index) {
-   return 1L << attribute_index;
-}
-
-
-bool is_primitive (bitset_t attributes) {
-   return attributes
-          & (ATTR_BOOL | ATTR_CHAR | ATTR_INT)
-       && ! (attributes | ATTR_ARRAY);
-}
-
-bool is_reference (bitset_t attributes) {
-   return attributes
-          & (ATTR_NULL | ATTR_STRING | ATTR_STRUCT | ATTR_ARRAY)
-       && TRUE;
-}
 
 // The following initialization style is a gcc-ism and will
 // not work with some C compilers, and confuses lint.
@@ -89,6 +39,23 @@ const char *attr_names[] = {
    [ATTR_INDEX_VREG    ] "vreg"    ,
    [ATTR_INDEX_VADDR   ] "vaddr"   ,
 };
+
+
+bitset_t bitset (int attribute_index) {
+   return 1L << attribute_index;
+}
+
+bool is_primitive (bitset_t attributes) {
+   return attributes
+          & (ATTR_BOOL | ATTR_CHAR | ATTR_INT)
+       && ! (attributes | ATTR_ARRAY);
+}
+
+bool is_reference (bitset_t attributes) {
+   return attributes
+          & (ATTR_NULL | ATTR_STRING | ATTR_STRUCT | ATTR_ARRAY)
+       && TRUE;
+}
 
 void print_attributes (bitset_t attributes) {
    ssize_t size = sizeof attr_names / sizeof *attr_names;

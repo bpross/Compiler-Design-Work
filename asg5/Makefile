@@ -19,9 +19,9 @@ MAKEDEPS = gcc -MM
 endif
 
 SOURCE      = stringtable.c strhash.c main.c lyutils.c ${MSOURCE}
-MSOURCE     = astree.c auxlib.c attributes.c typecheck.c
+MSOURCE     = astree.c auxlib.c attributes.c typecheck.c symboltable.c
 HEADER      = stringtable.h strhash.h lyutils.h ${MHEADER}
-MHEADER     = astree.h astree.rep.h auxlib.h
+MHEADER     = astree.h astree.rep.h auxlib.h symboltable.h
 LSOURCES    = scanner.l
 YSOURCES    = parser.y
 YY          = ${LSOURCES} ${YSOURCES}
