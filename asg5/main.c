@@ -16,7 +16,8 @@
 #include "auxlib.h"
 #include "stringtable.h"
 #include "typecheck.h"
-#include "strhash.h"
+//#include "strhash.h"
+#include "symboltable.h"
 
 #define CPP "/usr/bin/cpp"
 
@@ -144,6 +145,11 @@ void scan_opts (int argc, char **argv, struct options *options) {
 int main (int argc, char **argv) {
    struct options options = {FALSE, FALSE};
    int parsecode = 0;
+   symboltable_ref sym_table = new_symboltable();
+   symbolstack_ref ss = new_symbolstack();
+   blockstack_ref bs = new_blockstack();
+//   sym_table->size = 2;
+   printf("symboltable size = %p\n", sym_table);
    set_execname (argv[0]);
    scan_opts (argc, argv, &options);
    scanner_setecho (options.echoinput);
@@ -157,7 +163,7 @@ int main (int argc, char **argv) {
    //freeast (yyparse_astree);
    dump_astree (yyast, yyparse_astree);
    debugdump_stringtable(st,yystr); 
-   ast_dfspost_traverse(yyparse_astree, st);
+   ast_dfspost_traverse(sym_table, yyparse_astree, st,bs,ss);
    yyin_cpp_pclose();
    return get_exitstatus();
 }
